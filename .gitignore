@@ -82,3 +82,6 @@ runtime/
 
 # Java packaging
 jpackage/
+
+# specific java files
+src/weather/ApiKey.java
