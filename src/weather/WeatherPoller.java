@@ -40,7 +40,7 @@ public class WeatherPoller {
      */
     private boolean fetchOk;
     private WeatherDrawingState[] procureWeatherDrawingState(String city) {
-        WeatherData[] data;
+        WeatherData[] data = null;
         fetchOk = true;
         try {
             data = weatherClient.callData(city);

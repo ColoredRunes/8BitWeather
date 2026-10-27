@@ -1,0 +1,3 @@
+
+REMOVE ALL OF ONE FILE FROM GIT
+git filter-repo --force --path src/weather/WeatherClient.java --invert-paths
