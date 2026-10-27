@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <title>8 Bit Weather</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta property="og:title" content="8 Bit Weather">
+    <meta property="og:description" content="A retro weather application for Windows.">
+    <meta property="og:image" content="https://8-bit-weather.com/webimages/preview.png">
+    <meta property="og:url" content="https://8-bit-weather.com/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body>
+
+    <nav>
+        <img class="screenshot iconimage" src="webimages/icon.png" alt="8 Bit Weather screenshot">
+        <a class="sitebutton" href="index.html">Home</a>
+        <a class="sitebutton" href="info.html">Info</a>
+        <a class="sitebutton" href="legal.html">Legal</a>
+    </nav>
+
+    <main>
+
+        <h1 style="font-family: 'PixelFont', sans-serif;">8 Bit Weather</h1>
+        <p>
+            
+            <img src="webimages/gifsample.gif" alt="8 Bit Weather screenshot">
+        </p>
+        <p>A retro weather application for Windows.</p>
+        
+        <a id="dl" class="sitebutton" href="8BitWeather.msi">
+            Download for Windows
+        </a>
+        <!-- <p>
+            
+            <img src="webimages/liveexample.gif" alt="8 Bit Weather screenshot">
+        </p> -->
+        
+        <p>
+            Weather data provided by
+            <a style="font-family: 'PixelFont', sans-serif;" href="https://openweathermap.org/" target="_blank"
+                rel="noopener noreferrer">
+                OpenWeather
+            </a>
+        </p>
+        <p>
+            created by
+            <a style="font-family: 'PixelFont', sans-serif;" href="https://david-burns-art.com/" target="_blank"
+                rel="noopener noreferrer">
+                David Burns
+            </a>
+        </p>
+    </main>
+    <footer>
+        <p>© 2026 Code Chickn</p>
+                <p>
+            Weather data provided by
+            <a href="https://openweathermap.org/" target="_blank" rel="noopener noreferrer">
+                OpenWeather</a>
+        </p>
+        <p>
+            Application and website by
+            <a href="https://david-burns-art.com/" target="_blank" rel="noopener noreferrer">
+                David Burns</a>
+        </p>
+
+    </footer>
+
+    <script type="module">
+        import { db } from "./firebase.js";
+        import { doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        updateDoc(doc(db, "counters", "visits"), { count: increment(1) });
+        document.getElementById("dl").addEventListener("click", () => {
+            updateDoc(doc(db, "counters", "downloads"), { count: increment(1) });
+        });
+
+    </script>
+    <script type="module" src="exit-intent.js"></script>
+
+    </body>
+
+</html>

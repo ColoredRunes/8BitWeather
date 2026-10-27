@@ -1,0 +1,47 @@
+package _depracated;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javafx.scene.image.ImageView;
+
+public class AnimationManager {
+
+    private final List<ImageView> sprites = new ArrayList<>();
+
+    public void register(ImageView v) {
+        sprites.add(v);
+    }
+
+    public List<ImageView> getSprites() {
+        return sprites;
+    }
+
+    public void attachGroupDragListener() {
+        for (ImageView v : sprites) {
+
+            v.setOnMousePressed(e -> {
+                v.setUserData(new double[]{
+                    e.getSceneX(),
+                    e.getSceneY()
+                });
+            });
+
+            v.setOnMouseDragged(e -> {
+                double[] start = (double[]) v.getUserData();
+                double dx = e.getSceneX() - start[0];
+                double dy = e.getSceneY() - start[1];
+
+                // Move ALL sprites
+                for (ImageView sprite : sprites) {
+                    sprite.setLayoutX(sprite.getLayoutX() + dx);
+                    sprite.setLayoutY(sprite.getLayoutY() + dy);
+                }
+
+                // Update drag origin
+                start[0] = e.getSceneX();
+                start[1] = e.getSceneY();
+            });
+        }
+    }
+}

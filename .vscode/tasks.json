@@ -1,0 +1,71 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "deploy",
+            "type": "shell",
+            "detail": "Deploy Firebase Hosting content including publicly accessible weather images and website assets.",
+            "command": "firebase deploy --only hosting"
+        },
+        {
+            "label": "_clean-package",
+            "type": "shell",
+            "detail": "Delete the previously generated native application image and package output.",
+            "command": "if exist package rmdir /s /q package"
+        },
+        {
+            "label": "_clean-build",
+            "type": "shell",
+            "detail": "Remove compiled classes and distribution artifacts from previous builds.",
+            "command": "if exist out rmdir /s /q out & if exist dist rmdir /s /q dist"
+        },
+        {
+            "label": "_compile",
+            "type": "shell",
+            "detail": "Compile all Java source files from src into the out directory using project libraries.",
+            "command": "dir /s /b src\\*.java > sources.txt && javac -d out -cp \"libs/*\" @sources.txt"
+        },
+        {
+            "label": "_copy-resources-to-out",
+            "type": "shell",
+            "detail": "Copy application resources such as images, fonts, data files, and configuration files into the build output.",
+            "command": "xcopy resources out /E /I /Y"
+        },
+        {
+            "label": "_prepare-dist",
+            "type": "shell",
+            "detail": "Create the distribution folder and copy all required runtime libraries.",
+            "command": "mkdir dist && xcopy libs dist\\libs /E /I /Y"
+        },
+        {
+            "label": "_jar",
+            "type": "shell",
+            "detail": "Package compiled classes and resources into the executable application JAR.",
+            "command": "jar cfm dist\\app.jar MANIFEST.MF -C out ."
+        },
+        {
+            "label": "_jpackage",
+            "type": "shell",
+            "detail": "Generate a native Windows application image for 8 Bit Weather using jpackage.",
+            "command": "jpackage --name \"8 Bit Weather\" --input dist --main-jar app.jar --main-class Main --icon _launch4j\\icon.ico --type app-image --dest package"
+        },
+        {
+            "label": "build-package",
+            "detail": "Run the complete build pipeline: clean, compile, package, and generate the native application image.",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "_clean-package",
+                "_clean-build",
+                "_compile",
+                "_copy-resources-to-out",
+                "_prepare-dist",
+                "_jar",
+                "_jpackage"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

@@ -1,0 +1,247 @@
+// import TaskbarInfo;
+package _depracated;
+
+import javafx.animation.AnimationTimer;
+import javafx.scene.Node;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
+import util.TaskbarInfo;
+
+// Circle circle = new Circle(300, 300, 100);
+// circle.setFill(Color.RED);
+// circle.setStroke(Color.BLACK);
+// circle.setStrokeWidth(3);
+// root.getChildren().add(circle);
+
+public class AnimateController {
+
+    private final Pane root;
+    private final AnimationManager spriteGroup = new AnimationManager();
+    int CLOUDSPEED = 7;
+    int ICONSIZE = 200;
+    public AnimateController(Stage stage, double screenWidth, double screenHeight) {
+
+        root = new Pane();
+        root.setStyle("-fx-background-color: transparent;");
+        
+        TaskbarInfo.buildTaskbarInfo();
+        int x = TaskbarInfo.getX();
+        int y = TaskbarInfo.getY();
+        int width = TaskbarInfo.getWidth();
+        int height = TaskbarInfo.getHeight();
+
+        // private Node[] nodes = new Node[1];
+
+        ImageView imageViewTree = new ImageView();
+        ImageView imageViewDetails = new ImageView();
+        
+        ImageView imageViewClouds0 = new ImageView();
+        ImageView imageViewClouds1 = new ImageView();
+        ImageView imageViewClouds2 = new ImageView();
+        ImageView imageViewClouds3 = new ImageView();
+
+        ImageView imageViewClouds4 = new ImageView();
+        ImageView imageViewClouds5 = new ImageView();
+        ImageView imageViewClouds6 = new ImageView();
+        ImageView imageViewClouds7 = new ImageView();
+        Canvas canvas = new Canvas(800, 600);
+        
+
+        
+        new Animator(
+            imageViewTree,
+            new AnimationContext(
+                "file:/C:/Dev/Java/Ant/resources/images",
+                "vegetation",
+                10,
+                0,
+                screenWidth,
+                screenHeight,
+                10,
+                (int)screenWidth-100,
+                (int)screenHeight-200,
+                ICONSIZE,
+                0
+            )
+        );
+        new Animator(
+            imageViewDetails,
+            new AnimationContext(
+                "file:/C:/Dev/Java/Ant/resources/images",
+                "vegatationdetails",
+               //resources\images\vegatationdetails1.png 
+                10,
+                0,
+                screenWidth,
+                screenHeight,
+                10,
+                (int)screenWidth-100,
+                (int)screenHeight-200,
+                ICONSIZE,
+                0
+            )
+        );
+
+        new Animator(
+            imageViewClouds0,
+            new AnimationContext(
+                "file:/C:/Dev/Java/Ant/resources/images",
+                "clouds",
+                10,
+                0,
+                screenWidth,
+                screenHeight,
+                CLOUDSPEED,
+                (int)screenWidth-100,
+                (int)screenHeight-200-(ICONSIZE/40)*1,
+                ICONSIZE,
+                0
+            )
+        );
+        new Animator(
+            imageViewClouds1,
+            new AnimationContext(
+                "file:/C:/Dev/Java/Ant/resources/images",
+                "clouds",
+                10,
+                3,
+                screenWidth,
+                screenHeight,
+                CLOUDSPEED,
+                (int)screenWidth-100,
+                (int)screenHeight-200-(ICONSIZE/40)*1,
+                ICONSIZE,
+                0
+            )
+        );
+        new Animator(
+            imageViewClouds2,
+            new AnimationContext(
+                "file:/C:/Dev/Java/Ant/resources/images",
+                "clouds",
+                10,
+                6,
+                screenWidth,
+                screenHeight,
+                CLOUDSPEED,
+                (int)screenWidth-100,
+                (int)screenHeight-200-(ICONSIZE/40)*2,
+                ICONSIZE,
+                0
+            )
+        );
+        new Animator(
+            imageViewClouds3,
+            new AnimationContext(
+                "file:/C:/Dev/Java/Ant/resources/images",
+                "clouds",
+                10,
+                9,
+                screenWidth,
+                screenHeight,
+                CLOUDSPEED,
+                (int)screenWidth-100,
+                (int)screenHeight-200-(ICONSIZE/40)*3,
+                ICONSIZE,
+                0
+            )
+        );
+        new Animator(
+            imageViewClouds4,
+            new AnimationContext(
+                "file:/C:/Dev/Java/Ant/resources/images",
+                "clouds",
+                10,
+                5,
+                screenWidth,
+                screenHeight,
+                CLOUDSPEED,
+                (int)screenWidth-100,
+                (int)screenHeight-200-(ICONSIZE/40)*8,
+                ICONSIZE,
+                0
+            )
+        );
+        new Animator(
+            imageViewClouds5,
+            new AnimationContext(
+                "file:/C:/Dev/Java/Ant/resources/images",
+                "clouds",
+                10,
+                8,
+                screenWidth,
+                screenHeight,
+                10,
+                (int)screenWidth-100,
+                (int)screenHeight-200-(ICONSIZE/40)*5,
+                ICONSIZE,
+                0
+            )
+        );
+        new Animator(
+            imageViewClouds6,
+            new AnimationContext(
+                "file:/C:/Dev/Java/Ant/resources/images",
+                "clouds",
+                10,
+                1,
+                screenWidth,
+                screenHeight,
+                CLOUDSPEED,
+                (int)screenWidth-100,
+                (int)screenHeight-200-(ICONSIZE/40)*6,
+                ICONSIZE,
+                0
+            )
+        );
+        new Animator(
+            imageViewClouds7,
+            new AnimationContext(
+                "file:/C:/Dev/Java/Ant/resources/images",
+                "clouds",
+                10,
+                4,
+                screenWidth,
+                screenHeight,
+                CLOUDSPEED,
+                (int)screenWidth-100,
+                (int)screenHeight-200-(ICONSIZE/40)*2,
+                ICONSIZE,
+                0
+            )
+        );
+
+        spriteGroup.register(imageViewClouds0);
+        spriteGroup.register(imageViewClouds1);
+        spriteGroup.register(imageViewClouds2);
+        spriteGroup.register(imageViewClouds3);
+        spriteGroup.register(imageViewClouds4);
+        spriteGroup.register(imageViewClouds5);
+        spriteGroup.register(imageViewClouds6);
+        spriteGroup.register(imageViewClouds7);
+        spriteGroup.register(imageViewTree);
+        spriteGroup.register(imageViewDetails);
+
+        spriteGroup.attachGroupDragListener();
+        
+        root.getChildren().add(imageViewClouds0);
+        root.getChildren().add(imageViewClouds1);
+        root.getChildren().add(imageViewClouds2);
+        root.getChildren().add(imageViewClouds3);
+        root.getChildren().add(imageViewClouds4);
+        root.getChildren().add(imageViewClouds5);
+        root.getChildren().add(imageViewClouds6);
+        root.getChildren().add(imageViewClouds7);
+        root.getChildren().add(imageViewTree);
+        root.getChildren().add(imageViewDetails);
+
+        
+    }
+    
+    public Pane getRoot() { return root; }
+}

@@ -1,0 +1,13 @@
+{
+    "java.project.sourcePaths": [
+        "resources",
+        "src"
+    ],
+    "java.project.referencedLibraries": [
+        "c:\\Dev\\Java\\Ant\\libs\\jna-platform-5.13.0.jar",
+        "c:\\Dev\\Java\\Ant\\libs\\gson-2.10.1.jar",
+        "c:\\Dev\\Java\\Ant\\libs\\jna-5.13.0.jar"
+    ],
+    
+    "java.project.outputPath": "out",
+}

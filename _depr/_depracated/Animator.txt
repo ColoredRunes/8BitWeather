@@ -1,0 +1,122 @@
+package _depracated;
+
+
+import animator.AnimationContents;
+import javafx.animation.AnimationTimer;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+public class Animator {
+
+    // Nodes that are subcomponents of Panes.
+
+    // private main vars
+    private AnimationContents images;              // holds all images in this ONE animation
+    private int index;                  // index for cycling active in imageView Component.
+    private static long anim_speed;     // value determined by args to calculate animation speed.
+
+    /**
+     * 
+     * a constructor for the Animator class that takes in a path to the images,
+     * screen width and height, number of images, speed, x and y coordinates, and
+     * size of the image and binds it to the Node.
+     * 
+     * @param path         a string representing the path to the images
+     * @param screenWidth  a double representing the width of the screen
+     * @param screenHeight a double representing the height of the screen
+     * @param picArrayLen  an integer representing the number of images in the
+     *                     animation
+     * @param speed        an integer representing the speed of the animation (1-10)
+     * @param x            an integer representing the x coordinate of the image
+     * @param y            an integer representing the y coordinate of the image
+     * @param size         an integer representing the size of the image. Set to 0
+     *                     if desire unchanged sizing.
+     */
+
+    AnimationContext context;
+    
+    public Animator(ImageView imageView, AnimationContext context) {
+        this.context = context;
+        anim_speed = 1_000_000_000L - ((context.speed - 1) * 100_000_000L);
+
+        index = context.start;
+        images = new AnimateController(context.path, context.file_base_name, context.picArrayLen);
+
+        try {
+            Image first = images.imageArray[context.start];
+            System.out.println("Animator: first image url=" + (first == null ? "<null>" : first.getUrl()) + " error="
+                    + (
+                        first == null ? "<null>" : first.isError())
+                    );
+        } catch (Exception e) {
+            System.out.println("Animator: failed to inspect first image: " + e);
+        }
+
+        // load "image from path" +"i" +".png"
+        if (context.sizeW != 0) {
+            imageView.setFitWidth(context.sizeW);
+        }
+
+        // Use layout coordinates so Pane positions the node correctly
+        imageView.setLayoutX(context.x);
+        imageView.setLayoutY(context.y);
+        imageView.setPreserveRatio(true);
+        if (context.sizeH != 0) {
+            imageView.setPreserveRatio(false);
+            imageView.setFitHeight(context.sizeH);
+        }
+
+        imageView.setOnMousePressed(e -> {
+            imageView.setUserData(new double[] {
+                    e.getSceneX() - imageView.getLayoutX(),
+                    e.getSceneY() - imageView.getLayoutY()
+            });
+        });
+
+        imageView.setOnMouseDragged(e -> {
+            double[] offset = (double[]) imageView.getUserData();
+            imageView.setLayoutX(e.getSceneX() - offset[0]);
+            imageView.setLayoutY(e.getSceneY() - offset[1]);
+        });
+
+        // new AnimationTimer() {
+        // private int sign = 1;
+        // private increment
+
+        new AnimationTimer() {
+            private long nextUpdate = 0;
+            // private int sign = 1;
+
+            @Override
+            public void handle(long now) {
+                if (now >= nextUpdate) {
+                    index = (index + 1) % context.picArrayLen;
+                    imageView.setImage(images.imageArray[index]);
+
+                    nextUpdate = now + anim_speed; // schedule next frame
+                }
+            }
+        }.start();
+
+    }
+
+    void changeOpacity(ImageView imageView) {
+
+    }
+
+    void uploadComponentListener(ImageView v,ImageView[] animViews) {
+        v.setOnMousePressed(e -> {
+            v.setUserData(new double[] {
+                    e.getSceneX() - v.getLayoutX(),
+                    e.getSceneY() - v.getLayoutY()
+            });
+        });
+
+        v.setOnMouseDragged(e -> {
+            double[] offset = (double[]) v.getUserData();
+            v.setLayoutX(e.getSceneX() - offset[0]);
+            v.setLayoutY(e.getSceneY() - offset[1]);
+        });
+
+    }
+}

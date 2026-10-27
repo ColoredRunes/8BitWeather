@@ -1,0 +1,67 @@
+package _depracated;
+
+import java.util.ArrayList;
+
+import debug.Debuggable;
+import global.GlobalDebug;
+import javafx.scene.image.ImageView;
+
+public class AnimationContext extends Debuggable {
+
+    public static ArrayList<ImageView> animViews = new ArrayList<>();
+
+    public String path;
+    public String file_base_name;
+    public int picArrayLen;
+    public double screenWidth;
+    public double screenHeight;
+    public int start;
+    public int speed;
+    public int x;
+    public int y;
+    public int sizeW;
+    public int sizeH;
+
+    public AnimationContext(String path, String fileBaseName, int picArrayLen, int start, double screenWidth, double screenHeight,
+            int speed, int x,
+            int y, int sizeW, int sizeH) {
+        super(AnimationContext.class.getName());
+        this.path = path;
+        this.file_base_name = fileBaseName;
+        this.picArrayLen = picArrayLen;
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+        this.start = start;
+        this.speed = speed;
+        this.x = x;
+        this.y = y;
+        this.sizeW = sizeW;
+        this.sizeH = sizeH;
+
+    }
+
+    public void printDebug() {
+        System.out.printf(
+                "path: %s%n" +
+                        "   fileBaseName: %s%n" +
+                        "   picArrayLen: %d%n" +
+                        "   screenWidth: %d%n" +
+                        "   screenHeight: %d%n" +
+                        "   speed: %d%n" +
+                        "   x: %d%n" +
+                        "   y: %d%n" +
+                        "   sizeW: %d%n" +
+                        "   sizeH: %d%n",
+                path,
+                file_base_name,
+                picArrayLen,
+                (int)screenWidth,
+                (int)screenHeight,
+                speed,
+                x,
+                y,
+                sizeW,
+                sizeH);
+
+    }
+}

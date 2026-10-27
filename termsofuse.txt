@@ -1,0 +1,60 @@
+# Terms of Use
+
+**Last updated: October 22, 2026**
+
+## 1. Acceptance of Terms
+
+By accessing or using this weather forecast application (“the App”), you agree to these Terms of Use. If you do not agree with these terms, please discontinue use of the App.
+
+## 2. Purpose of the App
+
+The App provides weather information and forecasts for general informational purposes. Weather information is provided using third-party services, including OpenWeather.
+
+## 3. Weather Accuracy
+
+Weather forecasts are estimates and may not always be accurate, complete, or up to date. Weather conditions can change unexpectedly, and the App does not guarantee the accuracy or availability of any weather information.
+
+You are responsible for how you use the information provided by the App.
+
+## 4. No Emergency or Safety-Critical Use
+
+The App is not intended to be used as the sole source of information for emergencies, severe weather warnings, or other safety-critical decisions.
+
+For severe weather alerts and emergency instructions, consult your local weather authority or official emergency services.
+
+## 5. Third-Party Services
+
+The App uses OpenWeather to provide weather information. Third-party services may be subject to their own terms, conditions, and policies.
+
+Weather data remains subject to the applicable rights and licensing terms of its provider.
+
+## 6. Availability
+
+We aim to keep the App available and functioning properly, but we do not guarantee uninterrupted access. The App may occasionally be unavailable because of maintenance, technical problems, internet connectivity, or third-party service interruptions.
+
+## 7. Acceptable Use
+
+You agree not to misuse the App, interfere with its operation, attempt unauthorized access, or use it in violation of applicable laws.
+
+## 8. Disclaimer of Warranties
+
+To the extent permitted by applicable law, the App is provided on an “as is” and “as available” basis, without warranties of any kind, whether express or implied.
+
+We do not guarantee that the App will be error-free, continuously available, or suitable for every purpose.
+
+## 9. Limitation of Liability
+
+To the extent permitted by applicable law, the App's developer will not be liable for damages arising from your use of, inability to use, or reliance on the App or its weather information.
+
+Nothing in these Terms excludes or limits liability that cannot legally be excluded or limited.
+
+## 10. Changes to These Terms
+
+We may update these Terms of Use from time to time. Updated terms will be posted with a revised “Last updated” date.
+
+## 11. Contact
+
+For questions about these Terms of Use, contact:
+
+**App Developer:** [Your name or business name]  
+**Email:** [Your contact email]

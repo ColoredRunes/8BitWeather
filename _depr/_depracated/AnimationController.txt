@@ -1,0 +1,313 @@
+package animator;
+
+import debug.Debuggable;
+import javafx.animation.Animation;
+import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
+import javafx.util.Duration;
+
+public class AnimationController extends Debuggable{
+
+    private final Pane root;
+    private final Canvas canvas;
+    private final GraphicsContext gc;
+
+    private WeatherDrawingState env;
+
+    private AnimationContents tree;
+    private AnimationContents details;
+
+    private AnimationContents cloud0;
+    private AnimationContents cloud1; // May keep and use this to blit concurrently?
+    private AnimationContents cloud2; // May keep and use this to blit concurrently?
+    private AnimationContents cloud3; // May keep and use this to blit concurrently?
+    private AnimationContents cloud4; // May keep and use this to blit concurrently?
+    private AnimationContents cloud5; // May keep and use this to blit concurrently?
+    private AnimationContents cloud6; // May keep and use this to blit concurrently?
+    private AnimationContents cloud7; // May keep and use this to blit concurrently?
+
+    private Image errorImage = new Image("file:/C:/Dev/Java/Ant/resources/images/ground_error1.png");
+    private Image night = new Image("file:/C:/Dev/Java/Ant/resources/images/night1.png");
+
+    private AnimationContents[] allClouds;
+
+    private AnimationContents rain1;
+    private AnimationContents rain2;
+    private AnimationContents rain3;
+    private AnimationContents rain4;
+    private AnimationContents[] allRain;
+
+    private AnimationContents snow1;
+    private AnimationContents snow2;
+    private AnimationContents snow3;
+    private AnimationContents snow4;
+
+    // single sprite position
+    private double spriteX = 100;
+    private double spriteY = 100;
+    private double spriteW = 200;
+    private double spriteH = 200;
+    private double scale = 1.0;
+
+    // drag origin
+    private double dragStartX;
+    private double dragStartY;
+
+    // animation
+    
+
+    // Index treeIndex;
+    // Index cloudIndex;
+    // Index rainIndex;
+
+    // private int index = 0;
+    // private final long animSpeed = 120_000_000L; // ~120ms per frame
+    // private long nextUpdate = 0;
+    // private final long animSpeed = 120_000_000L; // ~120ms per frame
+    // private final long animSpeed = 120_000_000L; // ~120ms per frame
+    
+    public AnimationController(WeatherDrawingState ws, int screenW, int screenH) {
+        super(AnimationController.class.getSimpleName());
+        // rainIndex.update(100);
+        canvas = new Canvas(screenW, screenH);
+        gc = canvas.getGraphicsContext2D();
+
+        Timeline timeline = new Timeline(
+            new KeyFrame(Duration.millis(60), e -> drawSprite()) // ~60 FPS
+        );
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+        env = ws;
+        root = new Pane();
+        root.setStyle("-fx-background-color: transparent;");
+
+        tree = new AnimationContents(
+                "file:/C:/Dev/Java/Ant/resources/images",
+                "tree",
+                10, 0,120_000_000L);
+        cloud0 = new AnimationContents(
+                "file:/C:/Dev/Java/Ant/resources/images",
+                "clouds_0_",
+                10,
+                0,180_000_000L);
+        cloud1 = new AnimationContents(
+                "file:/C:/Dev/Java/Ant/resources/images",
+                "clouds_1_",
+                10,
+                1,180_000_000L);
+        cloud2 = new AnimationContents(
+                "file:/C:/Dev/Java/Ant/resources/images",
+                "clouds_2_",
+                10,
+                3,180_000_000L);
+        cloud3 = new AnimationContents(
+                "file:/C:/Dev/Java/Ant/resources/images",
+                "clouds_3_",
+                10,
+                4,180_000_000L);
+        cloud4 = new AnimationContents(
+                "file:/C:/Dev/Java/Ant/resources/images",
+                "clouds_4_",
+                4,
+                0,180_000_000L);
+        // cloud5 = new AnimationContents(
+        // "file:/C:/Dev/Java/Ant/resources/images",
+        // "clouds",
+        // 10,
+        // 7);
+        // cloud6 = new AnimationContents(
+        // "file:/C:/Dev/Java/Ant/resources/images",
+        // "clouds",
+        // 10,
+        // 2);
+        // cloud7 = new AnimationContents(
+        // "file:/C:/Dev/Java/Ant/resources/images",
+        // "clouds",
+        // 10,
+        // 5);
+        rain1 = new AnimationContents(
+                "file:/C:/Dev/Java/Ant/resources/images",
+                "rain",
+                10,
+                0,20_000_000L);
+        rain2 = rain1.copy(1);
+        rain3 = rain1.copy(2);
+        rain4 = rain1.copy(3);
+        rain3 = rain1.copy(4);
+
+        allClouds = new AnimationContents[] {
+                cloud0,
+                cloud1,
+                cloud2,
+                cloud3,
+                cloud4,
+                cloud5,
+                cloud6,
+                cloud7
+        };
+        allRain = new AnimationContents[] {
+                rain1,
+                rain2,
+                rain3,
+                rain4
+        };
+
+        // treeIndex = new Index(tree.imageArray.length, 120_000_000L);
+        // cloudIndex = new Index(cloud4.imageArray.length, 180_000_000L);
+        // // cloudIndex = new Index(cloud.imageArray.length, 60_000_000L);
+        // rainIndex = new Index(rain1.imageArray.length, 20_000_000L);
+
+        setupDragging();
+        startAnimation();
+
+        root.getChildren().add(canvas);
+        setSpriteSize(100, 100);
+    }
+
+    private void setupDragging() {
+        canvas.setOnMousePressed(e -> {
+            dragStartX = e.getSceneX();
+            dragStartY = e.getSceneY();
+        });
+
+        canvas.setOnMouseDragged(e -> {
+            double dx = e.getSceneX() - dragStartX;
+            double dy = e.getSceneY() - dragStartY;
+
+            spriteX += dx;
+            spriteY += dy;
+
+            dragStartX = e.getSceneX();
+            dragStartY = e.getSceneY();
+
+            drawSprite();
+        });
+    }
+
+    private void startAnimation() {
+        new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                tree.updateIndex(now);
+                for (AnimationContents rain : allRain) {
+                    rain.updateIndex(now);
+                }
+                cloud4.updateIndex(now);
+                // drawSprite();
+            }
+        }.start();
+    }
+
+    private void drawSprite() {
+
+        int drawRain = env.drawRain;
+        int drawSnow = env.drawSnow;
+        int drawWind = env.drawWind;
+        int drawClouds = env.drawClouds;
+        int drawLightning = env.drawLightning;
+        int drawFog = env.drawFog;
+        int drawSnowOnTheGround = env.drawSnowOnTheGround;
+        int drawNight = env.drawNight;
+
+        boolean err = env.error;
+
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        
+        if (drawClouds != 0)
+            gc.drawImage(cloud4.imageArray[cloud4.getCurrentFrameIndex()], spriteX, spriteY, spriteW, spriteH);
+
+        if (drawLightning >= 0) {
+
+        }
+        gc.drawImage(tree.imageArray[tree.getCurrentFrameIndex()], spriteX, spriteY, spriteW, spriteH);
+        if(err){gc.drawImage(errorImage, spriteX, spriteY, spriteW, spriteH);}
+        if (drawRain >= 0)
+
+        for (int i = 0; i < drawRain; i++) {
+            gc.drawImage(allRain[i].getCurrentImage(), spriteX+(i*4)-spriteW/32, spriteY);
+        }
+        // drawRain(drawRain, index, spriteX, spriteY);
+        if (drawSnow >= 0)
+            // drawSnow(drawSnow, index, spriteX, spriteY);
+            if (drawWind >= 0)
+                // drawWind(drawWind, index, spriteX, spriteY);
+                if (drawFog >= 0)
+                    // drawFog(drawFog, index, spriteX, spriteY);
+                    if (drawSnowOnTheGround >= 0) {
+                    }
+        // drawSnowOnTheGround(drawSnowOnTheGround, index, spriteX, spriteY);
+        // drawRain()
+        // System.out.println(env);
+        if(drawNight==1){
+            gc.drawImage(night, spriteX, spriteY, spriteW, spriteH);
+            // System.out.println("drawing");
+        }
+
+    }
+
+    private void drawSnow(int drawRain, int index, double x, double y) {
+
+        gc.drawImage(tree.imageArray[index], spriteX, spriteY, spriteW, spriteH);
+
+    }
+
+    private void drawWind(int drawRain, int index, double x, double y) {
+
+        gc.drawImage(tree.imageArray[index], spriteX, spriteY, spriteW, spriteH);
+
+    }
+
+    private void drawClouds(AnimationContents im, int index, double x, double y) {
+        gc.drawImage(im.imageArray[index], x, y, spriteW, spriteH);
+
+    }
+
+    private void drawLightning(int drawLightning, int index, double x, double y) {
+
+        gc.drawImage(tree.imageArray[index], spriteX, spriteY, spriteW, spriteH);
+
+    }
+
+    private void drawFog(int drawFog, int index, double x, double y) {
+
+        gc.drawImage(tree.imageArray[index], spriteX, spriteY, spriteW, spriteH);
+
+    }
+
+    private void drawSnowOnTheGround(int drawSnowOnTheGround, int index, double x, double y) {
+
+        gc.drawImage(tree.imageArray[index], spriteX, spriteY, spriteW, spriteH);
+
+    }
+
+    private void drawRain(int drawRain, int index, double x, double y) {
+
+        gc.drawImage(tree.imageArray[index], spriteX, spriteY, spriteW, spriteH);
+
+    }
+
+    public Pane getRoot() {
+        return root;
+    }
+
+    public void setSpriteSize(double width, double height) {
+        this.spriteW = width;
+        this.spriteH = height;
+    }
+
+    public void setScale(double scale) {
+        this.scale = scale;
+    }
+
+    @Override
+    public void printDebug() {
+        System.out.println(AnimationController.class.getSimpleName()+" Images: loaded " + errorImage.getUrl() + " error=" + errorImage.isError());
+        System.out.println(AnimationController.class.getSimpleName()+" Images: loaded " + night.getUrl() + " error=" + night.isError());
+    }
+
+}

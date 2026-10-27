@@ -1,0 +1,36 @@
+# Weather Disclaimer
+
+**Last updated: October 22, 2026**
+
+The weather information provided by this application is for general informational purposes only.
+
+## Forecast Accuracy
+
+Weather forecasts, temperature readings, precipitation estimates, and other weather information may be inaccurate, incomplete, delayed, or subject to change without notice.
+
+Although we aim to provide useful weather information, we do not guarantee the accuracy, reliability, completeness, or availability of the data displayed in the App.
+
+## No Emergency Advice
+
+This App is not a substitute for official weather warnings, emergency alerts, or professional advice.
+
+Do not rely solely on this App when making decisions involving personal safety, severe weather, travel hazards, outdoor activities, or other potentially dangerous conditions.
+
+For severe weather warnings and emergency instructions, consult your local official weather service and emergency authorities.
+
+## Third-Party Weather Data
+
+Weather information is provided in part by OpenWeather. The availability and accuracy of this information depend on third-party data and services that may change or become unavailable.
+
+## Limitation of Responsibility
+
+To the extent permitted by applicable law, the developer is not responsible for losses, damages, injuries, or other consequences resulting from reliance on the weather information provided by the App.
+
+Nothing in this disclaimer excludes or limits liability that cannot legally be excluded or limited.
+
+## Contact
+
+For questions about this disclaimer, contact:
+
+**App Developer:** [Your name or business name]  
+**Email:** [Your contact email]
