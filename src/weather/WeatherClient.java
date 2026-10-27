@@ -17,7 +17,16 @@ public class WeatherClient {
     private static final String API_KEY = ApiKey.API_KEY;
     private boolean isNight;
 
-    private String getResponse(String url) throws Exception {
+    public boolean isNight() {
+        return isNight;
+    }
+    /**
+     * Sending requests to URLS for response
+     * @param url
+     * @return
+     * @throws Exception
+     */
+    private static String getResponse(String url) throws Exception {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
@@ -25,22 +34,38 @@ public class WeatherClient {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         return response.body();
     }
-
-    public boolean isNight() {
-        return isNight;
+    /**
+     * Specifically calling OpenWeather API to get information about the local weather conditions of the argued city
+     * @param city an existing City. formatted = "Los%20Angeles,CA"
+     * @return
+     * @throws Exception
+     */
+    public static String getCurrentWeather(String city) throws Exception{
+        String weathersURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid="
+        + API_KEY;
+        return getResponse(weathersURL);
     }
+    /**
+     * Specifically calling OpenWeather API to get information about the local weather forecast of the argued city
+     * @param city an existing City. formatted = "Los%20Angeles,CA"
+     * @return
+     * @throws Exception
+     */
+    public static String getCurrentForecast(String city) throws Exception{
+        String forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid="
+                + API_KEY;
+        return getResponse(forecastURL);
+    }
+    
+    public static WeatherData[] callData(String city) throws Exception {
 
-    public WeatherData[] callData(String city) throws Exception {
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .create();
+
+        String jsonCurrent=getCurrentWeather(city);
+        String jsonForecast=getCurrentForecast(city);
         
-        Gson gson = new Gson();
-
-        // STEP 1 — CURRENT WEATHER
-        
-        String weathersURL  = "https://api.openweathermap.org/data/2.5/weather?q="+ city + "&units=imperial&appid=" + API_KEY;
-        String forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q="+ city + "&units=imperial&appid=" + API_KEY;
-
-        String jsonCurrent = getResponse(weathersURL);
-        String jsonForecast = getResponse(forecastURL);
 
         WeatherResponse current = gson.fromJson(jsonCurrent, WeatherResponse.class);
         if (current == null || current.main == null || current.sys == null || current.weather == null || current.weather.isEmpty()) {
@@ -53,7 +78,7 @@ public class WeatherClient {
         // String day = current.
         long sunrise = current.sys.sunrise;
         long sunset = current.sys.sunset;
-
+        boolean isNight;
         // Set night/day flag for outside use
         isNight = !(now >= sunrise && now < sunset);
 

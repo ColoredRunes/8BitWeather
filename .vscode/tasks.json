@@ -9,7 +9,7 @@
         {
             "label": "git commit",
             "type": "shell",
-            "command": "git commit -m \"committed with tasks.json\"",
+            "command": "git commit -m \"auto commit\"",
             "dependsOn": [
                 "git add"
             ]
@@ -17,10 +17,8 @@
         {
             "label": "git push",
             "type": "shell",
-            "detail": "Deploy Firebase Hosting content including publicly accessible weather images and website assets.",
             "command": "git push -u origin master",
             "dependsOn": [
-                "git add .",
                 "git commit"
             ]
         },
