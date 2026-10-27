@@ -13,7 +13,9 @@ import animator.ContentsAnim;
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 //  *  * Admittedly this singular object could inherit from its more general class, 'AnimationManager'. Instead this is copy pasted and mutated for singular use
-
+/**
+ * A manager for the contents of animations who
+ */
 public class AnimationManagerW  {
 
     private ContentsAnim tree;

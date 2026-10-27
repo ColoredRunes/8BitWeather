@@ -1,5 +1,49 @@
 import engine.App;
 
+
+/**
+ * A QUICK overview of general architecture.
+ * 
+ * only two scene holders
+ *  - AnimationControllerW
+ *  - MainMenuController
+ * 
+ * 
+Stage               [App] -> passed into [AnimationControllerW & MainMenuController]
+└── Scene           [total of 2 Scenes set in start() (AnimationControllerW & MainMenuController)]
+    └── Pane (root)
+        ├── todayAnimationUnit : AnimationConveyorW
+        │   ├── canvas : Canvas
+        │   ├── manager : AnimationManagerW
+        │   ├── ws : WeatherDrawingState
+        │   └── draw() renders:
+        │       ├── tree
+        │       ├── details
+        │       ├── clouds
+        │       ├── rain/snow
+        │       ├── fog/wind/lightning
+        │       ├── night
+        │       └── temp/day text
+        │
+        ├── forecastAnimations[0..3] : AnimationConveyorW[]
+        │   ├── canvas : Canvas
+        │   ├── manager : AnimationManagerW
+        │   ├── ws : WeatherDrawingState
+        │   └── draw() renders same style for each day-of-week slot
+        │
+        ├── Buttons
+        │   ├── closeButton
+        │   ├── forecastButton
+        │   ├── pinButton
+        │   └── minimizeButton
+        │
+        └── root UI behavior
+            ├── drag
+            ├── hover visibility
+            ├── pin/unpin
+            └── minimize/forecast toggles
+ * AnimationControllerW
+ */
 public class Main {
     public static void main(String[] args) {
         javafx.application.Application.launch(App.class, args);

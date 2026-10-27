@@ -26,7 +26,7 @@ public class WeatherPoller {
 
     // Pulled seperately for same cause; could be more homogenous.
     AnimationManagerW primaryAnimationManager;
-    private AnimationConveyorW[] DOWAnimations;
+    private AnimationConveyorW[] forecastAnimations;
 
     private int day = LocalDate.now().getDayOfWeek().getValue();
 
@@ -78,8 +78,8 @@ public class WeatherPoller {
     public WeatherPoller(AnimationControllerW controller, WeatherDrawingState weatherDrawingState, WeatherDrawingState[] DOWDrawingStates) {
         // this.city = city;
         this.weatherDrawingState = weatherDrawingState;
-        this.primaryAnimationManager = controller.primaryAnimationUnit.manager;
-        this.DOWAnimations = controller.DOWAnimations;
+        this.primaryAnimationManager = controller.todayAnimationUnit.manager;
+        this.forecastAnimations = controller.forecastAnimations;
         this.DOWDrawingState = DOWDrawingStates;
     }
 
@@ -102,10 +102,10 @@ public class WeatherPoller {
 
                 weatherDrawingState.copyFrom(newState);
                 primaryAnimationManager.procureAnim_Contents(newState);
-                for (int i = 0; i < DOWAnimations.length; i++) {
+                for (int i = 0; i < forecastAnimations.length; i++) {
                     WeatherDrawingState state = states[i + 1]; // shift by 1
                     DOWDrawingState[i].copyFrom(state);
-                    DOWAnimations[i].manager.procureAnim_Contents(state);
+                    forecastAnimations[i].manager.procureAnim_Contents(state);
                 }
             });
             return fetchOk;

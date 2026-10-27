@@ -12,8 +12,22 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+
+
+
+
+
+
+
+
+
 /**
  * Admittedly this singular object could inherit from its more general class, 'AnimationController'. Instead this is copy pasted and mutated for singular use
+ */
+/**
+ * A controller who holds
+ * AnimationControllerW
  */
 public class AnimationControllerW {
     /*
@@ -27,8 +41,9 @@ public class AnimationControllerW {
 
     public Stage stage;
 
-    public final AnimationConveyorW primaryAnimationUnit;
-    public final AnimationConveyorW[] DOWAnimations = new AnimationConveyorW[4];
+    public final AnimationConveyorW todayAnimationUnit;
+    public final AnimationConveyorW[] forecastAnimations = new AnimationConveyorW[4];
+
     WeatherDrawingState[] DOWState;
 
     private Button closeButton;
@@ -42,11 +57,6 @@ public class AnimationControllerW {
     private double dragStartY;
     private double stageStartX;
     private double stageStartY;
-
-    // ArrayList<ContentsAnim> currentlyDrawing;
-
-    // double spriteW;
-    // double spriteH;
 
     boolean isPinned = true;
     private int pinnedY = 35;
@@ -62,23 +72,20 @@ public class AnimationControllerW {
     private ArrayList<Runnable> shutdownL = new ArrayList<>();
 
     /**
-     * 
-     * One Stage
-     * └── One Scene
-     * └── One Pane (root)
-     * ├── Canvas #1 (with its own AnimationController)
-     * ├── Canvas #2 (with its own AnimationController)
-     * ├── Canvas #3
-     * ├── ...
-     * └── Canvas #7
-     * 
-     * @param ws
-     * @param screenWidth
-     * @param screenHeight
+     * Creates a weather animation controller and initializes all animation
+     * conveyors using weather state information contained within the provided
+     * application context.
+     *
+     * @param app        the parent JavaFX application
+     * @param appContext shared application state containing weather data,
+     *                   forecast data, and screen dimensions
+     * @param stage      the JavaFX stage that will display this weather widget
      */
-    public AnimationControllerW(Application app,ApplicationContext appContext, Stage stage) {
+    public AnimationControllerW(
+            Application app,
+            ApplicationContext appContext,
+            Stage stage) {
         this.stage = stage;
-        
 
         WeatherDrawingState ws = appContext.weatherDrawingState;
         WeatherDrawingState[] DOWState = appContext.DOWDrawingStates;
@@ -94,25 +101,22 @@ public class AnimationControllerW {
         sprWidth = 128;
         sprHeight = 128;
 
-
-        primaryAnimationUnit = new AnimationConveyorW(0, 0, sprWidth, sprHeight, ws);
+        todayAnimationUnit = new AnimationConveyorW(0, 0, sprWidth, sprHeight, ws);
         // cultivate them based on initalization
 
         for (int i = 0; i < DOWState.length; i++) {
-            DOWAnimations[i] = new AnimationConveyorW(0, sprHeight * (i + 1), sprWidth, sprHeight, DOWState[i]);
+            forecastAnimations[i] = new AnimationConveyorW(0, sprHeight * (i + 1), sprWidth, sprHeight, DOWState[i]);
         }
 
-
-        
         // Canvas canvas = new Canvas(400, 300);
         // GraphicsContext gc = canvas.getGraphicsContext2D();
 
     }
-    public void start(){
+
+    public void start() {
         // applicationContext.
-        
+
         Pane root = new Pane();
-        
 
         root.setBackground(Background.EMPTY); // or null
 
@@ -121,28 +125,28 @@ public class AnimationControllerW {
         scene.setFill(Color.TRANSPARENT);
 
         // Text t = new Text();
-        primaryAnimationUnit.addToRoot(root);
+        todayAnimationUnit.addToRoot(root);
 
         for (int i = 0; i < DOWState.length; i++) {
-            DOWAnimations[i].addToRoot(root);
+            forecastAnimations[i].addToRoot(root);
         }
         initButtons(root);
 
         installDragBehavior();
-        
+
         stage.setScene(scene);
         // Add listener during SHOW FORECAST
         stage.setWidth(sprWidth);
         stage.setHeight(sprHeight * 6);
         stage.setOpacity(1.0);
-        
+
         stage.setX(screenWidth - sprWidth);
         stage.setY(pinnedY - 5);
 
         stage.setAlwaysOnTop(true);
         stage.setScene(scene);
         stage.show();
-        
+
     }
 
     public boolean isShowForcast() {
@@ -185,7 +189,7 @@ public class AnimationControllerW {
         });
 
         root.setOnMouseExited(e -> {
-            if (primaryAnimationUnit.isVisible()) {
+            if (todayAnimationUnit.isVisible()) {
                 minimizeButton.setVisible(false);
                 closeButton.setVisible(false);
                 forecastButton.setVisible(false);
@@ -218,47 +222,47 @@ public class AnimationControllerW {
             }
         });
         minimizeButton.setOnMouseClicked(event -> {
-            
-            if (primaryAnimationUnit.isVisible()) {
-                primaryAnimationUnit.setVisible(false);
-                
-                for (AnimationConveyorW animationUnit : DOWAnimations) {
+
+            if (todayAnimationUnit.isVisible()) {
+                todayAnimationUnit.setVisible(false);
+
+                for (AnimationConveyorW animationUnit : forecastAnimations) {
                     animationUnit.setVisible(false);
                     closeButton.setVisible(false);
                     pinButton.setVisible(false);
                     forecastButton.setVisible(false);
                 }
             } else {
-                primaryAnimationUnit.setVisible(true);
+                todayAnimationUnit.setVisible(true);
                 closeButton.setVisible(true);
                 pinButton.setVisible(true);
                 forecastButton.setVisible(true);
             }
-            primaryAnimationUnit.manager.setshouldUpdate(primaryAnimationUnit.isVisible());
-            for (AnimationConveyorW animationUnit : DOWAnimations) {
+            todayAnimationUnit.manager.setshouldUpdate(todayAnimationUnit.isVisible());
+            for (AnimationConveyorW animationUnit : forecastAnimations) {
                 animationUnit.manager.setshouldUpdate(animationUnit.isVisible());
             }
         });
         minimizeButton.setOnMouseEntered(event -> {
-            if (!primaryAnimationUnit.isVisible()) {
-                primaryAnimationUnit.setVisible(true);
+            if (!todayAnimationUnit.isVisible()) {
+                todayAnimationUnit.setVisible(true);
             }
         });
         forecastButton.setOnMouseClicked(event -> {
             // showForcast=true;
             if (showForcast) {
-                for (AnimationConveyorW animationUnit : DOWAnimations) {
+                for (AnimationConveyorW animationUnit : forecastAnimations) {
                     animationUnit.setVisible(false);
                 }
                 showForcast = false;
             } else {
-                for (AnimationConveyorW animationUnit : DOWAnimations) {
+                for (AnimationConveyorW animationUnit : forecastAnimations) {
                     animationUnit.setVisible(true);
                 }
                 showForcast = true;
             }
-            primaryAnimationUnit.manager.setshouldUpdate(primaryAnimationUnit.isVisible());
-            for (AnimationConveyorW animationUnit : DOWAnimations) {
+            todayAnimationUnit.manager.setshouldUpdate(todayAnimationUnit.isVisible());
+            for (AnimationConveyorW animationUnit : forecastAnimations) {
                 animationUnit.manager.setshouldUpdate(animationUnit.isVisible());
             }
         });
@@ -309,7 +313,7 @@ public class AnimationControllerW {
             stage.setY(stageStartY + (stage.getY() - stageStartY));
         };
 
-        primaryAnimationUnit.getCanvas().setOnMousePressed(event -> {
+        todayAnimationUnit.getCanvas().setOnMousePressed(event -> {
             if (!isPinned) {
 
                 dragStartX = event.getScreenX();
@@ -319,7 +323,7 @@ public class AnimationControllerW {
             }
         });
 
-        primaryAnimationUnit.getCanvas().setOnMouseDragged(event -> {
+        todayAnimationUnit.getCanvas().setOnMouseDragged(event -> {
             if (!isPinned) {
                 double deltaX = event.getScreenX() - dragStartX;
                 double deltaY = event.getScreenY() - dragStartY;
@@ -328,7 +332,7 @@ public class AnimationControllerW {
             }
         });
 
-        primaryAnimationUnit.getCanvas().setOnMouseReleased(event -> {
+        todayAnimationUnit.getCanvas().setOnMouseReleased(event -> {
             dragHandler.run();
         });
 
