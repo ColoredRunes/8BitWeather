@@ -15,11 +15,6 @@ import com.google.gson.*;
 public class WeatherClient {
     public WeatherClient(){}
     private static final String API_KEY = ApiKey.API_KEY;
-    private boolean isNight;
-
-    public boolean isNight() {
-        return isNight;
-    }
     /**
      * Sending requests to URLS for response
      * @param url
@@ -68,29 +63,17 @@ public class WeatherClient {
         
 
         WeatherResponse current = gson.fromJson(jsonCurrent, WeatherResponse.class);
+        ForecastResponse forecast = gson.fromJson(jsonForecast, ForecastResponse.class);
+
+
         if (current == null || current.main == null || current.sys == null || current.weather == null || current.weather.isEmpty()) {
             throw new IllegalArgumentException("Invalid city or API response for: " + city);
         }
-
-        long now = current.dt;
-        String thisDay = Instant.ofEpochSecond(1791249222).toString().substring(0,10);
-
-        // String day = current.
-        long sunrise = current.sys.sunrise;
-        long sunset = current.sys.sunset;
-        boolean isNight;
-        // Set night/day flag for outside use
-        isNight = !(now >= sunrise && now < sunset);
-
-         
-        ForecastResponse forecast = gson.fromJson(jsonForecast, ForecastResponse.class);
         if (forecast == null || forecast.list == null || forecast.list.isEmpty()) {
             throw new IllegalArgumentException("Forecast lookup failed for city: " + city);
         }
+
         Map<String, List<ForecastResponse.ForecastItem>> days = new LinkedHashMap<>();
-        
-        
-        
         String lastDay = "";
         Map<String, Double[]> temps = new LinkedHashMap<>();
         Double[] min_max_avg = new Double[] {999.0,-999.0,0.0};
@@ -126,7 +109,7 @@ public class WeatherClient {
 
         // boolean skipToday = true;
         WeatherData[] daysOfData = new WeatherData[5];
-        daysOfData[0] = new WeatherData(current.weather.get(0).id, current.main.temp, current.main.tempMax, current.main.tempMin, current.main.feelsLike); 
+        daysOfData[0] = new WeatherData.WeatherDataToday(current.weather.get(0).id, current.main.temp, current.main.tempMax, current.main.tempMin, current.main.feelsLike,current.sys.sunrise,current.sys.sunset); 
         List<String> keys = new ArrayList<>(days.keySet());
         for (int idx = 1; idx <= 4; idx++) {
             

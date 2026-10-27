@@ -5,14 +5,7 @@ import java.util.Date;
 import weather.WeatherData;
 
 /**
- * Why it feels disproportionate
- * A tiny floating icon is easy to think of as just “a couple of images,” but
- * the real cost is:
- * 
- * full-screen transparent window
- * per-frame rendering pipeline
- * repeated image compositing
- * lots of independent sprite objects
+ * A drawing state argued to 
  */
 public class WeatherDrawingState {
 

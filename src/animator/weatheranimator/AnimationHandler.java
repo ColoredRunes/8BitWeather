@@ -16,7 +16,7 @@ import javafx.scene.image.Image;
 /**
  * A manager for the contents of animations who
  */
-public class AnimationManagerW  {
+public class AnimationHandler  {
 
     private ContentsAnim tree;
     private ContentsAnim details;
@@ -57,7 +57,7 @@ public class AnimationManagerW  {
         this.shouldUpdate = shouldUpdate;
     }
 
-    AnimationManagerW() {
+    AnimationHandler() {
         initAnimations();
         startAnimation();
     }

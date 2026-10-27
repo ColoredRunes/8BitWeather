@@ -1,5 +1,6 @@
 package weather;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -10,7 +11,7 @@ import java.util.function.Consumer;
 
 import animator.weatheranimator.AnimationControllerW;
 import animator.weatheranimator.AnimationConveyorW;
-import animator.weatheranimator.AnimationManagerW;
+import animator.weatheranimator.AnimationHandler;
 import animator.weatheranimator.WeatherDrawingState;
 import javafx.application.Platform;
 
@@ -18,14 +19,14 @@ public class WeatherPoller {
 
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
-    private WeatherClient weatherClient = new WeatherClient();
+    // private WeatherClient WeatherClient = new WeatherClient();
     private String city;
 
     public WeatherDrawingState weatherDrawingState;
     private WeatherDrawingState[] DOWDrawingState;
 
     // Pulled seperately for same cause; could be more homogenous.
-    AnimationManagerW primaryAnimationManager;
+    AnimationHandler primaryAnimationManager;
     private AnimationConveyorW[] forecastAnimations;
 
     private int day = LocalDate.now().getDayOfWeek().getValue();
@@ -43,25 +44,25 @@ public class WeatherPoller {
         WeatherData[] data = null;
         fetchOk = true;
         try {
-            data = weatherClient.callData(city);
+            data = WeatherClient.callData(city);
             if (data == null || data.length < 5) {
                 throw new IllegalStateException("Weather data incomplete for city: " + city);
             }
         } catch (Exception e) {
             fetchOk = false;
-            data = new WeatherData[]{
-                new WeatherData(-2, 0, 0, 0, 0),
-                new WeatherData(-2, 0, 0, 0, 0),
-                new WeatherData(-2, 0, 0, 0, 0),
-                new WeatherData(-2, 0, 0, 0, 0),
-                new WeatherData(-2, 0, 0, 0, 0),
-            };
+            return  null;
         }
-            // CONNECTION ERROR
-        // TODAY
-        boolean night = weatherClient.isNight();
-        WeatherDrawingState today = new WeatherDrawingState(data[0], night ? 1 : 0,day);
-        day = LocalDate.now().getDayOfWeek().getValue();
+        // Conditional nighttime logic
+        Instant now = Instant.now();
+        WeatherData.WeatherDataToday t =
+            (WeatherData.WeatherDataToday) data[0];
+        long sunset = t.sunset;
+        long sunrise = t.sunrise;
+        boolean isNight =
+                now.isBefore(Instant.ofEpochSecond(sunrise))
+            || now.isAfter(Instant.ofEpochSecond(sunset));
+
+        WeatherDrawingState today = new WeatherDrawingState(data[0], isNight ? 1 : 0,day);
 
         // NEXT 4 DAYS
         WeatherDrawingState[] days = new WeatherDrawingState[5];

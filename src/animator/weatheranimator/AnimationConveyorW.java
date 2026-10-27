@@ -16,10 +16,14 @@ import javafx.scene.text.Font;
  *  * Admittedly this singular object could inherit from its more general class, 'AnimationConveyor'. Instead this is copy pasted and mutated for singular use
 
  */
+/**
+ * A container who holds the 
+ * AnimationConveyorW
+ */
 public class AnimationConveyorW {
 
     private final Canvas canvas;
-    public final AnimationManagerW manager;
+    public final AnimationHandler manager;
     private final AnimationTimer timer;
     private WeatherDrawingState ws;
     private GraphicsContext gc;
@@ -73,7 +77,7 @@ public class AnimationConveyorW {
         canvas.setLayoutX(x);
         canvas.setLayoutY(y);
 
-        manager = new AnimationManagerW();
+        manager = new AnimationHandler();
         gc = canvas.getGraphicsContext2D();
         timer = new AnimationTimer() {
             @Override

@@ -29,6 +29,14 @@ public class WeatherData {
         this.temp_max    = temp_max;
         this.temp_min    = temp_min;
     }
+    public static class WeatherDataToday extends WeatherData{
+        public WeatherDataToday(int ID, double temp, double temp_max, double temp_min, double feels_like,long sunrise, long sunset) {
+            super(ID, temp, temp_max, temp_min, feels_like);
+            this.sunrise=sunrise; this.sunset=sunset;
+        }
+        long sunrise; long sunset;
+    
+    }
     public void copyFrom(WeatherData w){
         this.ID          = w.ID;
         this.temp        = w.temp;

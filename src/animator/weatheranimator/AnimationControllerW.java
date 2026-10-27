@@ -26,7 +26,7 @@ import javafx.stage.Stage;
  * Admittedly this singular object could inherit from its more general class, 'AnimationController'. Instead this is copy pasted and mutated for singular use
  */
 /**
- * A controller who holds
+ * A controller who holds Conceyors and Buttons.
  * AnimationControllerW
  */
 public class AnimationControllerW {
