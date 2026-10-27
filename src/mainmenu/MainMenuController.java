@@ -115,7 +115,6 @@ public class MainMenuController {
         String oldCity = app.applicationContext.city;
         app.weatherPoller.start(normalizedCity, ok -> Platform.runLater(() -> {
             if (!ok) {
-                System.out.println("NONE FOUND");
                 if (oldCity != null)
                     app.weatherPoller.start(oldCity, x -> {
                     });

@@ -3,7 +3,6 @@ package engine;
 import java.io.File;
 
 import animator.weatheranimator.AnimationControllerW;
-import debug.Debuggable;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
@@ -27,7 +26,6 @@ public class App extends Application {
         primaryStage.setResizable(false);
 
         Image icon = new Image(new File("resources/images/icon.png").toURI().toString());
-        System.out.println("icon error=" + icon.isError() + " w=" + icon.getWidth());
         primaryStage.getIcons().add(icon);
 
         applicationContext = new ApplicationContext();
@@ -55,7 +53,6 @@ public class App extends Application {
             Platform.exit();
         });
 
-        // printDebug();
     }
 
     @Override
@@ -65,10 +62,6 @@ public class App extends Application {
         }
     }
 
-    void printDebug() {
-        Debuggable.printAllDebuggingInfo();
-        
-    }
 }
 
 /**

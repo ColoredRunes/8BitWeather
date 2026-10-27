@@ -10,12 +10,11 @@ import java.util.ArrayList;
 
 
 import animator.ContentsAnim;
-import debug.Debuggable;
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 //  *  * Admittedly this singular object could inherit from its more general class, 'AnimationManager'. Instead this is copy pasted and mutated for singular use
 
-public class AnimationManagerW extends Debuggable {
+public class AnimationManagerW  {
 
     private ContentsAnim tree;
     private ContentsAnim details;
@@ -57,7 +56,6 @@ public class AnimationManagerW extends Debuggable {
     }
 
     AnimationManagerW() {
-        super(AnimationManagerW.class.getSimpleName());
         initAnimations();
         startAnimation();
     }
@@ -191,8 +189,6 @@ public class AnimationManagerW extends Debuggable {
 
         int length = Integer.parseInt(response.body().trim());
 
-        // System.out.println(length); // 
-        // 5
         return length;
     }
     public void procureAnim_Contents(WeatherDrawingState weatherState) {
@@ -289,12 +285,5 @@ public class AnimationManagerW extends Debuggable {
 
     }
 
-    @Override
-    public void printDebug() {
-        // System.out.println(AnimationController.class.getSimpleName()+" Images: loaded
-        // " + errorImage.getUrl() + " error=" + errorImage.isError());
-        // System.out.println(AnimationController.class.getSimpleName()+" Images: loaded
-        // " + night.getUrl() + " error=" + night.isError());
-    }
 
 }

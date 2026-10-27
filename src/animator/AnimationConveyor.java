@@ -100,7 +100,6 @@ public class AnimationConveyor {
     }
 
     public void draw() {
-        // System.out.println(shouldDraw);
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         if (!canvas.isVisible()|| !shouldDraw )
             return;

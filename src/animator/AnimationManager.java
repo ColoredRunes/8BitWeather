@@ -5,7 +5,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.ArrayList;
 
-import debug.Debuggable;
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 
@@ -13,7 +12,7 @@ import javafx.scene.image.Image;
  * A regular animation Manager meant to hold whatever contents are sent, and initiate them (ContentsAnim)
  * AnimationManager
  */
-public class AnimationManager extends Debuggable {
+public class AnimationManager  {
         private ArrayList<ContentsAnim> drawListInternal = new ArrayList<>();
 
     private boolean shouldUpdate = true;
@@ -24,7 +23,6 @@ public class AnimationManager extends Debuggable {
     }
 
     public AnimationManager(ArrayList<ContentsAnim> contents) {
-        super(AnimationManager.class.getSimpleName());
         drawListInternal = contents;
         startAnimation();
     }
@@ -61,9 +59,6 @@ public class AnimationManager extends Debuggable {
     }
 
 
-    @Override
-    public void printDebug() {
-    }
 
 
 }

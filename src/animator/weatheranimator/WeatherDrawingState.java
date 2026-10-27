@@ -200,13 +200,6 @@ public class WeatherDrawingState {
             drawClouds = 4;
             // * 804=overcast // DRAW CLOUDS
         }
-        // System.out.println(toString());
-        // for (int i : allDraws) {
-        // if (i < 0) {
-        // error = true;
-        // }
-        // }
-        //
     }
 
     // 701 → Mist

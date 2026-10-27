@@ -2,7 +2,6 @@ package animator;
 
 import java.util.Arrays;
 
-import debug.Debuggable;
 import javafx.scene.image.Image;
 
 /**
@@ -15,7 +14,7 @@ import javafx.scene.image.Image;
  * loads the images from the specified path and file base name, and provides
  * access to the loaded images.
  */
-public class ContentsAnim extends Debuggable implements Cloneable {
+public class ContentsAnim  implements Cloneable {
     public Image[] imageArray;
 
     // public int index;
@@ -60,7 +59,6 @@ public class ContentsAnim extends Debuggable implements Cloneable {
      */
 
     public ContentsAnim(String file_base_name, int size, int startingIndex, long animSpeed) {
-        super(ContentsAnim.class.getSimpleName());
         this.index = new Index(size, startingIndex, animSpeed);
         this.fileBaseName = file_base_name;
         this.path =  "/images";
@@ -112,13 +110,7 @@ public class ContentsAnim extends Debuggable implements Cloneable {
         return c;
     }
 
-    @Override
-    public void printDebug() {
-        for (int i = 0; i < imageArray.length; i++) {
-            System.out.println(ContentsAnim.class.getSimpleName() + " Images: loaded " + imageArray[i].getUrl()
-                    + " error=" + imageArray[i].isError());
-        }
 
-    }
+    
 
 }
