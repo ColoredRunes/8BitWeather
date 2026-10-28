@@ -6,10 +6,10 @@
             "type": "shell",
             "command": "git add ."
         },
-        {
+         {
             "label": "git commit",
             "type": "shell",
-            "command": "git commit -m \"auto commit\"",
+            "command": "git commit -m \"${input:commitMessage}\"",
             "dependsOn": [
                 "git add"
             ]
@@ -87,6 +87,14 @@
                 "kind": "build",
                 "isDefault": true
             }
+        }
+    ],
+    "inputs": [
+        {
+            "id": "commitMessage",
+            "type": "promptString",
+            "description": "Enter commit message",
+            "default": "Update files"
         }
     ]
 }
