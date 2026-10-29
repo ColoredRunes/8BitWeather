@@ -6,6 +6,7 @@
     
     <title>Legal</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="webimages/icon.png?v=1">
 </head>
 
 <body>
@@ -15,6 +16,8 @@
         <a class="sitebutton" href="index.html">Home</a>
         <a class="sitebutton" href="info.html">Info</a>
         <a class="sitebutton" href="legal.html">Legal</a>
+        <a class="sitebutton" href="version.html">Version</a>
+
     </nav>
 
     <main>
@@ -47,9 +50,15 @@
                 <h3>15 minute intervals</h3>
                 Weather data updates for this app makes a request to the data provider (OpenWeather) every 15 minutes. This app updates the weather every 15 minutes and immediately on boot.
                 <h3>FEATURES</h3>
-                <p> High temperature</p>
-                <p> lows temperature</p>
-                <p> Simple UI</p>
+                <div style="text-align: left; margin-left: 25%;">
+                    
+                    <p> Current conditions in your area</p>
+                    <p> High temperature</p>
+                    <p> lows temperature</p>
+                    <p> Simple UI</p>
+                </div>
+                <h3>FUTURE UPDATES</h3>
+                I want to add more information from the local current conditions. Also I may be adding the entire app to this website instead of only having it available in the app. This way users will not have to download the app in order to see the 8 bit forecast!
             </p>
 
             <h1>Weather Disclaimer</h1>
@@ -115,7 +124,7 @@
             </div>
     </main>
     <footer>
-        <p>© 2026 Code Chickn</p>
+        <p>© 2026 Code Chicken</p>
         <p>
             Weather data provided by
             <a href="https://openweathermap.org/" target="_blank" rel="noopener noreferrer">
@@ -129,6 +138,15 @@
             </p>
         </p>
     </footer>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("img").forEach(img => {
+        const url = new URL(img.src, window.location.href);
+        url.searchParams.set("v", Date.now());
+        img.src = url.toString();
+    });
+});
+</script>
 </body>
 
 </html>

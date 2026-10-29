@@ -5,7 +5,7 @@ C:\Dev\Java\Ant\src\animator\ContentsAnim.java
 C:\Dev\Java\Ant\src\animator\interfacewindow\ClosableFactory.java
 C:\Dev\Java\Ant\src\animator\weatheranimator\AnimationControllerW.java
 C:\Dev\Java\Ant\src\animator\weatheranimator\AnimationConveyorW.java
-C:\Dev\Java\Ant\src\animator\weatheranimator\AnimationManagerW.java
+C:\Dev\Java\Ant\src\animator\weatheranimator\AnimationHandler.java
 C:\Dev\Java\Ant\src\animator\weatheranimator\WeatherCode.java
 C:\Dev\Java\Ant\src\animator\weatheranimator\WeatherDrawingState.java
 C:\Dev\Java\Ant\src\debug\Debuggable.java
@@ -16,6 +16,7 @@ C:\Dev\Java\Ant\src\mainmenu\MainMenuController.java
 C:\Dev\Java\Ant\src\ui\Button.java
 C:\Dev\Java\Ant\src\util\Controller.java
 C:\Dev\Java\Ant\src\util\TaskbarInfo.java
+C:\Dev\Java\Ant\src\weather\ApiKey.java
 C:\Dev\Java\Ant\src\weather\ForecastResponse.java
 C:\Dev\Java\Ant\src\weather\OneCallResponse.java
 C:\Dev\Java\Ant\src\weather\WeatherClient.java
