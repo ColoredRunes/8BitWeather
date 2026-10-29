@@ -82,12 +82,11 @@ import {
 
     <style>
       .overlay {
-        margin-left: 18%;
+        
         text-align: left;
         display: none;
         position: fixed;
         inset: 0;
-        background: rgba(0,0,0,0.6);
         z-index: 1000;
         align-items: center;
         justify-content: center;
@@ -98,8 +97,9 @@ import {
       }
 
       .modal {
-        background: #000;
+        background: #430505;
         border-radius: 12px;
+        
         padding: 32px;
         max-width: 400px;
         width: 90%;
@@ -112,7 +112,7 @@ import {
       }
 
       p {
-        color: #555;
+        color: #b4a7a7;
         margin: 0 0 20px;
         font-size: 14px;
       }

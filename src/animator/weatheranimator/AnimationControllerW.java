@@ -86,8 +86,10 @@ public class AnimationControllerW {
             ApplicationContext appContext,
             Stage stage) {
         this.stage = stage;
-
+        
+        // Primary WeatherState for today
         WeatherDrawingState ws = appContext.weatherDrawingState;
+        // WeatherStates for forecasted week
         WeatherDrawingState[] DOWState = appContext.DOWDrawingStates;
 
         this.DOWState = DOWState;
