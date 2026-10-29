@@ -131,14 +131,6 @@ public class AnimationConveyor {
         gc.setFill(new Color(0, 0, 0, .5)); // text color
 
         gc.setFont(fontStyling);
-        // int length = (int) (fontStyling.getSize() * dayString.length() * .5);
-        // gc.fillRoundRect(textPos[0], textPos[1] - 12, length, 12, 10, 10);
-        // gc.setFill(Color.WHITE); // text color
-        // gc.fillText("" + dayString, textPos[0], textPos[1]);
-
-        // gc.fillText("" + ws.weatherData.temp_min, textPos[0], textPos[1] + canvas.getHeight() * .8);
-        // gc.fillText("" + ws.weatherData.temp, textPos[0] + canvas.getWidth() / 3, textPos[1] + canvas.getHeight() * .8);
-        // gc.fillText("" + ws.weatherData.temp_max, textPos[0] + (canvas.getWidth() / 3)*2,textPos[1] + canvas.getHeight() * .8);
 
     }
 

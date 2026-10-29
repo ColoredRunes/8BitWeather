@@ -2,7 +2,8 @@ package engine;
 
 import java.io.File;
 
-import animator.weatheranimator.AnimationControllerW;
+import animator.weatheranimator.WeatherDashboardController;
+import animator.weatheranimator.WeatherWindowController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
@@ -17,7 +18,8 @@ public class App extends Application {
     // dataDir.mkdirs();
     public ApplicationContext applicationContext;
     public WeatherPoller weatherPoller;
-    public AnimationControllerW animationController;
+    // public AnimationControllerW animationController;
+    public WeatherWindowController weatherWindowController;
     public MainMenuController mainMenuController  ;
 
     @Override
@@ -36,15 +38,15 @@ public class App extends Application {
         applicationContext.screenWidth = screenWidth;
         applicationContext.screenHeight = screenHeight;
 
-        animationController = new AnimationControllerW(this,applicationContext,primaryStage);
+        weatherWindowController = new WeatherWindowController(this, applicationContext, primaryStage);
         mainMenuController  = new MainMenuController(this,applicationContext,primaryStage);
         // animationController.show();
         // Will need to send each one to the poller
-        weatherPoller = new WeatherPoller(animationController, applicationContext.weatherDrawingState,
+        weatherPoller = new WeatherPoller(weatherWindowController.getAnimationController(), applicationContext.weatherDrawingState,
                 applicationContext.DOWDrawingStates);
         // Do not show the weather stage until the user has entered a valid city.
         Runnable r = () -> weatherPoller.stop();
-        animationController.addShutDownListener(r);
+        weatherWindowController.addShutDownListener(r);
 
         primaryStage.setOnCloseRequest(event -> {
             if (weatherPoller != null) {

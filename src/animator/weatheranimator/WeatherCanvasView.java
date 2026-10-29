@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import util.ImageGrabber;
 
 /**
  * A class to manage and display animated content on a canvas.
@@ -20,16 +21,19 @@ import javafx.scene.text.Font;
  * A container who holds the 
  * AnimationConveyorW
  */
-public class AnimationConveyorW {
+public class WeatherCanvasView {
 
     private final Canvas canvas;
-    public final AnimationHandler manager;
+    public final AnimationHandler handler;
     private final AnimationTimer timer;
     private WeatherDrawingState ws;
     private GraphicsContext gc;
     private Font fontStyling;
     private int[] textPos = new int[] { 10, 25 };
-
+    
+    Image menu = ImageGrabber.getImage("menu",".png");
+    double scale = Math.min(128 / menu.getWidth(), 128/ menu.getHeight());
+    
     public enum FontFormatLocal {
         Djuwara("font/Djuwara/Djuwara-1jgBe.ttf", 12),
         Museno("font/Museno/Museno-3l4yp.ttf", 16);
@@ -55,9 +59,9 @@ public class AnimationConveyorW {
      * @param spriteH the height of the sprite
      * @param ws      the weather drawing state
      */
-    public AnimationConveyorW(double x, double y, int spriteW, int spriteH, WeatherDrawingState ws) {
-        // shouldDraw = ws.badDraw;
-        // if(ws.badDraw ==) shouldDraw =false;
+    public WeatherCanvasView(double x, double y, int spriteW, int spriteH, WeatherDrawingState ws) {
+        
+
         // _____________________________________________________________________
         // _____________________________________________________________________
         // I can port this over later to have user options for text types/fonts.
@@ -77,7 +81,7 @@ public class AnimationConveyorW {
         canvas.setLayoutX(x);
         canvas.setLayoutY(y);
 
-        manager = new AnimationHandler();
+        handler = new AnimationHandler();
         gc = canvas.getGraphicsContext2D();
         timer = new AnimationTimer() {
             @Override
@@ -88,7 +92,9 @@ public class AnimationConveyorW {
         timer.start();
         startAnimation();
     }
-
+    public void procureAnim_Contents(WeatherDrawingState ws){
+        handler.procureAnim_Contents(ws);
+    }
     public Canvas getCanvas() {
         return canvas;
     }
@@ -100,6 +106,9 @@ public class AnimationConveyorW {
                 draw();
             }
         }.start();
+    }
+    public void setShouldUpdate(boolean shouldUpdate) {
+        this.handler.setshouldUpdate(shouldUpdate);
     }
 
     public void setVisible(boolean isVisible) {
@@ -116,8 +125,9 @@ public class AnimationConveyorW {
             return;
         String dayString = ws.dayString == null ? "null" : ws.dayString;
 
-        ArrayList<ContentsAnim> list = manager.getDrawList();
+        ArrayList<ContentsAnim> list = handler.getDrawList();
         int i = 0;
+        gc.drawImage(menu, 0, 0, menu.getWidth() * scale, menu.getHeight() * scale);
         for (ContentsAnim animationContents : list) {
 
             Image image = animationContents.getCurrentImage();

@@ -65,7 +65,6 @@ public class WeatherClient {
         WeatherResponse current = gson.fromJson(jsonCurrent, WeatherResponse.class);
         ForecastResponse forecast = gson.fromJson(jsonForecast, ForecastResponse.class);
 
-
         if (current == null || current.main == null || current.sys == null || current.weather == null || current.weather.isEmpty()) {
             throw new IllegalArgumentException("Invalid city or API response for: " + city);
         }
@@ -78,36 +77,40 @@ public class WeatherClient {
         Map<String, Double[]> temps = new LinkedHashMap<>();
         Double[] min_max_avg = new Double[] {999.0,-999.0,0.0};
         double avgTemp = 0.0;
-        
-        // 8 iterations per date //
+        int dayCount = 0;
 
-        //_________________________________________
         for (ForecastResponse.ForecastItem item : forecast.list) {
             String day = item.dt_txt.substring(0, 10); // "YYYY-MM-DD"
             days.computeIfAbsent(day, k -> new ArrayList<>()).add(item);
-            if(lastDay.equals("")){ lastDay = day; }
-            if(!day.equals(lastDay)){
-                min_max_avg[2]=avgTemp /8;
-                min_max_avg[2] =(double) Math.round( min_max_avg[2]*100)/100;
-                temps.put(lastDay, min_max_avg.clone());
-                min_max_avg = new Double[] {999.0,-999.0,0.0 };
-                lastDay = day;
 
+            if (lastDay.isEmpty()) {
+                lastDay = day;
+            } else if (!day.equals(lastDay)) {
+                min_max_avg[2] = avgTemp / dayCount;
+                min_max_avg[2] = (double) Math.round(min_max_avg[2] * 100) / 100;
+                temps.put(lastDay, min_max_avg.clone());
+
+                min_max_avg = new Double[] {999.0, -999.0, 0.0};
                 avgTemp = 0.0;
-                // continue;
+                dayCount = 0;
+                lastDay = day;
             }
+
             avgTemp += item.main.temp;
-            min_max_avg[0] =(double) Math.round(Math.min(item.main.temp_min, min_max_avg[0])*100)/100;
-            min_max_avg[1] =(double) Math.round(Math.max(item.main.temp_max, min_max_avg[1])*100)/100;
-            // min_max_avg[2] =(double) Math.round( min_max_avg[2]*100)/100;
+            dayCount++;
+            min_max_avg[0] = (double) Math.round(Math.min(item.main.temp_min, min_max_avg[0]) * 100) / 100;
+            min_max_avg[1] = (double) Math.round(Math.max(item.main.temp_max, min_max_avg[1]) * 100) / 100;
         }
-        //post loop flush
-        min_max_avg[2] =(double) Math.round( min_max_avg[2]*100)/100;
-        temps.put(lastDay, min_max_avg.clone());
-        //_________________________________________
+
+        if (!lastDay.isEmpty()) {
+            min_max_avg[2] = avgTemp / dayCount;
+            min_max_avg[2] = (double) Math.round(min_max_avg[2] * 100) / 100;
+            temps.put(lastDay, min_max_avg.clone());
+        }
         // int idx = 1;
 
         // boolean skipToday = true;
+        System.out.println(jsonCurrent);
         WeatherData[] daysOfData = new WeatherData[5];
         daysOfData[0] = new WeatherData.WeatherDataToday(current.weather.get(0).id, current.main.temp, current.main.tempMax, current.main.tempMin, current.main.feelsLike,current.sys.sunrise,current.sys.sunset); 
         List<String> keys = new ArrayList<>(days.keySet());

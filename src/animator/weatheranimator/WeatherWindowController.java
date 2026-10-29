@@ -8,7 +8,6 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -21,24 +20,17 @@ public class WeatherWindowController {
 
 
 
-    AnimationControllerW animationController;
+    WeatherDashboardController animationController;
 
 
 
 /**
- * Admittedly this singular object could inherit from its more general class, 'AnimationController'. Instead this is copy pasted and mutated for singular use
  */
 /**
  * A controller who holds Conceyors and Buttons.
  * AnimationControllerW
  */
-    /*
-     * Stage
-     * └── Scene
-     * └── Pane (root)
-     * ├── Canvas
-     * └── Button(s)
-     */
+  
     Pane root;
 
     public Stage stage;
@@ -68,16 +60,20 @@ public class WeatherWindowController {
     
     private boolean showForcast = false;
     private ArrayList<Runnable> shutdownL = new ArrayList<>();
-
+    class CustomTaskBar{
+        CustomTaskBar(){
+            
+        }
+        public int getHeight(){return 10;}
+        public int getWidth(){return 100;}
+    }
+    CustomTaskBar taskBar = new CustomTaskBar();
     /**
-     * Creates a weather animation controller and initializes all animation
-     * conveyors using weather state information contained within the provided
-     * application context.
-     *
-     * @param app        the parent JavaFX application
-     * @param appContext shared application state containing weather data,
-     *                   forecast data, and screen dimensions
-     * @param stage      the JavaFX stage that will display this weather widget
+     * A window controller meant to keep track of higher level items at the window level.
+     * subcomponents include buttons and the WeatherDashBoardController which is embedded inside of this unit controller.
+     * @param app
+     * @param appContext
+     * @param stage
      */
     public WeatherWindowController(
             Application app,
@@ -85,7 +81,7 @@ public class WeatherWindowController {
             Stage stage) {
         this.stage = stage;
         
-        animationController = new AnimationControllerW(app, appContext, stage);
+        animationController = new WeatherDashboardController(app, appContext);
 
 
         double screenWidth = appContext.screenWidth;
@@ -97,40 +93,39 @@ public class WeatherWindowController {
         animWidth = 128;
         animHeight = 128;
 
-
-        // Canvas canvas = new Canvas(400, 300);
-        // GraphicsContext gc = canvas.getGraphicsContext2D();
-
     }
 
     public void start() {
         // applicationContext.
-
         Pane root = new Pane();
-
+        
         root.setBackground(Background.EMPTY); // or null
-
-        Scene scene = new Scene(root, 128, animHeight * 6);
-
+        
+        Scene scene = new Scene(root, 128, animHeight * 6 + taskBar.getHeight());
+        
         scene.setFill(Color.TRANSPARENT);
-
+        
         // Text t = new Text();
+        animationController.start(root);
+        animationController.setForecastExpanded(false);
         initButtons(root);
-
+        
         installDragBehavior();
-
+        
         stage.setScene(scene);
         // Add listener during SHOW FORECAST
         stage.setWidth(animWidth);
         stage.setHeight(animHeight * 6);
         stage.setOpacity(1.0);
-
+        
         stage.setX(screenWidth - animWidth);
         stage.setY(pinnedY - 5);
+        
 
         stage.setAlwaysOnTop(true);
         stage.setScene(scene);
         stage.show();
+        
 
     }
 
@@ -194,13 +189,34 @@ public class WeatherWindowController {
                 stage.setX(screenWidth - animWidth);
                 stage.setY(pinnedY);
                 isPinned = true;
-
             }
         });
 
-        minimizeButton.setOnMouseClicked(event -> {animationController.onMinimizePressed();});
+        minimizeButton.setOnMouseClicked(event -> {
+            animationController.onMinimizePressed();
+            if (animationController.isExpanded()){
+                getPinButton().setVisible(false);
+                getCloseButton().setVisible(false);
+                getForecastButton().setVisible(false);
+            }
+            else{
+                getPinButton().setVisible(true);
+                getCloseButton().setVisible(true);
+                getForecastButton().setVisible(true);
+            }
+        });
+
         minimizeButton.setOnMouseEntered(event -> {animationController.onMinimizeMouseEntered();});
-        forecastButton.setOnMouseClicked(event -> {animationController.onForecastPressed();});
+        forecastButton.setOnMouseClicked(event -> {animationController.onForecastPressed();
+             // showForcast=true;
+        if (showForcast) {
+            animationController.setForecastExpanded(false);
+            showForcast = false;
+        } else {
+            animationController.setForecastExpanded(true);
+            showForcast = true;
+        }
+        });
         stage.iconifiedProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
                 stage.setIconified(false); // block minimize
@@ -295,5 +311,19 @@ public class WeatherWindowController {
     }
 
 
-
+    public Button getPinButton() {
+        return pinButton;
+    }
+    public Button getMinimizeButton() {
+        return minimizeButton;
+    }
+    public Button getCloseButton() {
+        return closeButton;
+    }
+    public Button getForecastButton() {
+        return forecastButton;
+    }
+    public WeatherDashboardController getAnimationController() {
+        return animationController;
+    }
 }

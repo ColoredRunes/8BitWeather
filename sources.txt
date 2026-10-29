@@ -8,6 +8,7 @@ C:\Dev\Java\Ant\src\animator\weatheranimator\AnimationConveyorW.java
 C:\Dev\Java\Ant\src\animator\weatheranimator\AnimationHandler.java
 C:\Dev\Java\Ant\src\animator\weatheranimator\WeatherCode.java
 C:\Dev\Java\Ant\src\animator\weatheranimator\WeatherDrawingState.java
+C:\Dev\Java\Ant\src\animator\weatheranimator\WeatherWindowController.java
 C:\Dev\Java\Ant\src\debug\Debuggable.java
 C:\Dev\Java\Ant\src\engine\App.java
 C:\Dev\Java\Ant\src\engine\ApplicationContext.java

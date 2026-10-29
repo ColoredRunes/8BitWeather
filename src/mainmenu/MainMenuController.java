@@ -124,7 +124,8 @@ public class MainMenuController {
                 return;
             }
             app.applicationContext.city = normalizedCity;
-            app.animationController.start();
+            app.weatherWindowController.start();
+            // app.animationController.start();
         }));
     }
 

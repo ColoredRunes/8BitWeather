@@ -2,6 +2,8 @@ package weather;
 
 import java.util.List;
 
+import com.google.gson.annotations.SerializedName;
+
 public class WeatherResponse {
     public Coord coord;
     public List<Weather> weather;
@@ -29,14 +31,16 @@ public class WeatherResponse {
         public String icon;    }
 
     public static class Main {
+
         public double temp;
-        public double feelsLike;
-        public double tempMin;
-        public double tempMax;
+        @SerializedName("feels_like")   public double feelsLike;
+        @SerializedName("temp_min")     public double tempMin;
+        @SerializedName("temp_max")     public double tempMax;
         public int pressure;
         public int humidity;
-        public int seaLevel;
-        public int grndLevel;    }
+        @SerializedName("sea_level")    public int seaLevel;
+        @SerializedName("grnd_level")   public int grndLevel;
+    }
 
     public static class Wind {
         public double speed;
