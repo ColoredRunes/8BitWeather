@@ -4,7 +4,10 @@
         "src"
     ],
     "java.project.referencedLibraries": [
+        "libs\\bcutil-jdk18on-1.86.jar",
         "c:\\Dev\\Java\\Ant\\libs\\jna-platform-5.13.0.jar",
+        "c:\\Dev\\Java\\Ant\\libs\\bcprov-jdk18on-1.86.jar",
+        "c:\\Dev\\Java\\Ant\\libs\\bcpkix-jdk18on-1.86.jar",
         "c:\\Dev\\Java\\Ant\\libs\\gson-2.10.1.jar",
         "c:\\Dev\\Java\\Ant\\libs\\jna-5.13.0.jar"
     ],

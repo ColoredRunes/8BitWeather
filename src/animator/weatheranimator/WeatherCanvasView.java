@@ -30,8 +30,7 @@ public class WeatherCanvasView {
     private GraphicsContext gc;
     private Font fontStyling;
     private int[] textPos = new int[] { 10, 25 };
-    
-    Image menu = ImageGrabber.getImage("menu",".png");
+    Image menu = ImageGrabber.getImage("/images/menu","menu",".png");
     double scale = Math.min(128 / menu.getWidth(), 128/ menu.getHeight());
     
     public enum FontFormatLocal {

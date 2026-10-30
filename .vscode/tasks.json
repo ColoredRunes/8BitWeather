@@ -6,7 +6,7 @@
             "type": "shell",
             "command": "git add ."
         },
-         {
+        {
             "label": "git commit",
             "type": "shell",
             "command": "git commit -m \"${input:commitMessage}\"",
@@ -71,7 +71,25 @@
             "command": "jpackage --name \"8 Bit Weather\" --input dist --main-jar app.jar --main-class Main --icon _launch4j\\icon.ico --type app-image --dest package"
         },
         {
-            "label": "build-package",
+            "label": "_set-version",
+            "type": "shell",
+            "detail": "Prompt for a version, write it to the .aip, and generate a new Product Code.",
+            "command": "for /d %i in (\"%ProgramFiles(x86)%\\Caphyon\\Advanced Installer *\") do if exist \"%i\\bin\\x86\\AdvancedInstaller.com\" \"%i\\bin\\x86\\AdvancedInstaller.com\" /edit \"C:\\Dev\\Java\\Ant\\installer\\8 Bit Weather.aip\" /SetVersion ${input:appVersion} && \"%i\\bin\\x86\\AdvancedInstaller.com\" /edit \"C:\\Dev\\Java\\Ant\\installer\\8 Bit Weather.aip\" /SetProductCode",
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [
+                            "/d",
+                            "/c"
+                        ]
+                    }
+                }
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "_build-package",
             "detail": "Run the complete build pipeline: clean, compile, package, and generate the native application image.",
             "dependsOrder": "sequence",
             "dependsOn": [
@@ -82,11 +100,73 @@
                 "_prepare-dist",
                 "_jar",
                 "_jpackage"
+            ]
+        },
+        {
+            "label": "_build-msi",
+            "type": "shell",
+            "detail": "Compile a fresh MSI package using the Advanced Installer command line tool.",
+            "command": "for /d %i in (\"%ProgramFiles(x86)%\\Caphyon\\Advanced Installer *\") do if exist \"%i\\bin\\x86\\AdvancedInstaller.com\" \"%i\\bin\\x86\\AdvancedInstaller.com\" /build \"C:\\Dev\\Java\\Ant\\installer\\8 Bit Weather.aip\"",
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [
+                            "/d",
+                            "/c"
+                        ]
+                    }
+                }
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "_set-version",
+                "_build-package"
+            ]
+        },
+        {
+            "label": "_sign",
+            "type": "shell",
+            "detail": "Sign the existing MSI with signtool. Runs standalone, no build.",
+            "command": "C:\\Program Files (x86)\\Windows Kits\\10\\App Certification Kit\\signtool.exe",
+            "args": [
+                "sign",
+                "/f",
+                "C:\\Dev\\Java\\Ant\\installer\\8BitWeather.pfx",
+                "/p",
+                "${input:pfxPassword}",
+                "/fd",
+                "SHA256",
+                "/t",
+                "http://timestamp.digicert.com",
+                "C:\\Dev\\Java\\Ant\\installer\\8 Bit Weather-SetupFiles\\8 Bit Weather.msi"
+            ],
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [
+                            "/d",
+                            "/c"
+                        ]
+                    }
+                }
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "build_and_sign",
+            "detail": "Complete pipeline: build Java binaries, compile the MSI, then sign it.",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "_build-msi",
+                "_sign"
             ],
             "group": {
                 "kind": "build",
                 "isDefault": true
-            }
+            },
+            "problemMatcher": []
         }
     ],
     "inputs": [
@@ -95,6 +175,19 @@
             "type": "promptString",
             "description": "Enter commit message",
             "default": "Update files"
+        },
+        {
+            "id": "pfxPassword",
+            "type": "promptString",
+            "description": "PFX certificate password",
+            "password": true
+        },
+        {
+            "id": "appVersion",
+            "type": "promptString",
+            "description": "Version number (e.g. 1.0.3)",
+            "default": "1.0.3"
         }
+        
     ]
 }

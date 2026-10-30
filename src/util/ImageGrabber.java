@@ -4,9 +4,9 @@ import javafx.scene.image.Image;
 
 public class ImageGrabber {
 
-    public static Image getImage(String file_base_name,String fileType) {
+    public static Image getImage(String base,String file_base_name,String fileType) {
 
-        String base = "/images";
+        
         // sending blank "" arg as path is only meant for use in copy.
         if (file_base_name != "") {
             if (!(base.endsWith("/") || base.endsWith("\\\\"))) {

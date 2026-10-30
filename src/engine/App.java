@@ -42,7 +42,7 @@ public class App extends Application {
         mainMenuController  = new MainMenuController(this,applicationContext,primaryStage);
         // animationController.show();
         // Will need to send each one to the poller
-        weatherPoller = new WeatherPoller(weatherWindowController.getAnimationController(), applicationContext.weatherDrawingState,
+        weatherPoller = new WeatherPoller(weatherWindowController.getWeatherDashboardController(), applicationContext.weatherDrawingState,
                 applicationContext.DOWDrawingStates);
         // Do not show the weather stage until the user has entered a valid city.
         Runnable r = () -> weatherPoller.stop();

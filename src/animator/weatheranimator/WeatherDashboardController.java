@@ -61,7 +61,9 @@ public class WeatherDashboardController {
      */
     public WeatherDashboardController(
             Application app,
-            ApplicationContext appContext) {
+            ApplicationContext appContext,
+            int taskbarOffsetH
+        ) {
 
         // Primary WeatherState for today
         WeatherDrawingState ws = appContext.weatherDrawingState;
@@ -73,10 +75,10 @@ public class WeatherDashboardController {
         sprWidth = 128;
         sprHeight = 128;
 
-        todayAnimationUnit = new WeatherCanvasView(0, 0, sprWidth, sprHeight, ws);
+        todayAnimationUnit = new WeatherCanvasView(0, taskbarOffsetH, sprWidth, sprHeight, ws);
 
         for (int i = 0; i < DOWState.length; i++) {
-            forecastAnimations[i] = new WeatherCanvasView(0, sprHeight * (i + 1), sprWidth, sprHeight, DOWState[i]);
+            forecastAnimations[i] = new WeatherCanvasView(0, taskbarOffsetH+sprHeight * (i + 1), sprWidth, sprHeight, DOWState[i]);
         }
 
     }
@@ -96,29 +98,25 @@ public class WeatherDashboardController {
     public void onMinimizePressed() {
             if (todayAnimationUnit.isVisible()) {
                 todayAnimationUnit.setVisible(false);
-
+                todayAnimationUnit.setShouldUpdate(false);
                 for (WeatherCanvasView animationUnit : forecastAnimations) {
                     animationUnit.setVisible(false);
+                    animationUnit.setShouldUpdate(animationUnit.isVisible());
                 }
                 
-            } else {
-                todayAnimationUnit.setVisible(true);
-                
+            } 
+            else {
+                todayAnimationUnit.setVisible(true); 
             }
             todayAnimationUnit.setShouldUpdate(todayAnimationUnit.isVisible());
-            for (WeatherCanvasView animationUnit : forecastAnimations) {
-                animationUnit.setShouldUpdate(animationUnit.isVisible());
-            }
     }
 
-    public void onMinimizeMouseEntered() {
-        if (!todayAnimationUnit.isVisible()) {
-            todayAnimationUnit.setVisible(true);
-        }
-    }
+    
     
     public void onForecastPressed() {
-       
+        if (isMinimized()) {
+            onMinimizePressed();
+        }
         todayAnimationUnit.setShouldUpdate(todayAnimationUnit.isVisible());
         for (WeatherCanvasView animationUnit : forecastAnimations) {
             animationUnit.setShouldUpdate(animationUnit.isVisible());

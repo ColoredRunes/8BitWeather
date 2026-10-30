@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
 Main-Class: Main
-Class-Path: libs/gson-2.10.1.jar libs/jna-5.13.0.jar libs/jna-platform-5.13.0.jar
+Class-Path: libs/gson-2.10.1.jar libs/jna-5.13.0.jar libs/jna-platform-5.13.0.jar libs/bcpkix-jdk18on-1.86.jar libs/bcprov-jdk18on-1.86.jar libs/bcutil-jdk18on-1.86.jar
