@@ -75,7 +75,8 @@ dist/
 package/
 installer/
 runtime/
-
+out/
+sources.txt
 # Installers
 *.msi
 *.exe
