@@ -2,9 +2,9 @@ package mainmenu;
 
 import java.util.ArrayList;
 
-import animator.AnimationConveyor;
 import animator.ContentsAnim;
 import animator.interfacewindow.ClosableFactory;
+import animator.mainmenu.AnimationConveyor;
 import engine.App;
 import engine.ApplicationContext;
 import javafx.animation.PauseTransition;

@@ -12,40 +12,25 @@ import javafx.scene.layout.Pane;
 
 
 
-
 /**
- * Admittedly this singular object could inherit from its more general class, 'AnimationController'. Instead this is copy pasted and mutated for singular use
- */
-/**
- * A controller who holds Conceyors and Buttons.
- * AnimationControllerW
+ * a controller class that manages the weather dashboard, which includes the primary weather animation for today and the forecast animations for the upcoming days. It initializes the weather animation units based on the provided weather data and handles user interactions such as minimizing and expanding the dashboard.
+ * The WeatherDashboardController class is responsible for creating and managing the weather animation units, which are instances of the WeatherCanvasView class. It provides methods to start the dashboard, handle user interactions, and manage the visibility and update state of the animation units.
+ * 
+ * WeatherDashboardController
  */
 public class WeatherDashboardController {
-    /*
-     * Stage
-     * └── Scene
-     * └── Pane (root)
-     * ├── Canvas
-     * └── Button(s)
-     */
-    // Pane root;
-
-    // public Stage stage;
 
     public final WeatherCanvasView todayAnimationUnit;
     public final WeatherCanvasView[] forecastAnimations = new WeatherCanvasView[4];
 
-    WeatherDrawingState[] DOWState;
+    WeatherDrawingState[] daysOfWeekStates;
 
     private int sprWidth;
     private int sprHeight;
 
 
     /**
-     * Creates a weather animation controller and initializes all animation
-     * conveyors using weather state information contained within the provided
-     * application context.
-     *
+     * Constructs a WeatherDashboardController with the specified application, application context, and taskbar offset height. It initializes the weather animation units for today and the forecasted days based on the provided weather data.
      * @param app        the parent JavaFX application
      * @param appContext shared application state containing weather data,
      *                   forecast data, and screen dimensions
@@ -57,19 +42,19 @@ public class WeatherDashboardController {
         ) {
 
         // Primary WeatherState for today
-        WeatherDrawingState ws = appContext.weatherDrawingState;
+        WeatherDrawingState todayState = appContext.weatherDrawingState;
         // WeatherStates for forecasted week
-        WeatherDrawingState[] DOWState = appContext.DOWDrawingStates;
+        WeatherDrawingState[] daysOfWeekStates = appContext.DOWDrawingStates;
 
-        this.DOWState = DOWState;
+        this.daysOfWeekStates = daysOfWeekStates;
 
         sprWidth = 128;
         sprHeight = 128;
 
-        todayAnimationUnit = new WeatherCanvasView(0, taskbarOffsetH, sprWidth, sprHeight, ws);
+        todayAnimationUnit = new WeatherCanvasView(0, taskbarOffsetH, sprWidth, sprHeight, todayState);
 
-        for (int i = 0; i < DOWState.length; i++) {
-            forecastAnimations[i] = new WeatherCanvasView(0, taskbarOffsetH+sprHeight * (i + 1), sprWidth, sprHeight, DOWState[i]);
+        for (int i = 0; i < daysOfWeekStates.length; i++) {
+            forecastAnimations[i] = new WeatherCanvasView(0, taskbarOffsetH+sprHeight * (i + 1), sprWidth, sprHeight, daysOfWeekStates[i]);
         }
 
     }
@@ -80,7 +65,7 @@ public class WeatherDashboardController {
         // Text t = new Text();
         todayAnimationUnit.addToRoot(root);
 
-        for (int i = 0; i < DOWState.length; i++) {
+        for (int i = 0; i < daysOfWeekStates.length; i++) {
             forecastAnimations[i].addToRoot(root);
         }
     }

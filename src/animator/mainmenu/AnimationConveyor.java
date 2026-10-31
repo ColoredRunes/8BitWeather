@@ -1,7 +1,8 @@
-package animator;
+package animator.mainmenu;
 
 import java.util.ArrayList;
 
+import animator.ContentsAnim;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -10,6 +11,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+/**
+ * This particular conveyor is only used in MainMenuController.java, and is not used in the WeatherDashboardController.java. Its parallel in weather is WeatherCanvasView.java, which is a copy of this class, but with some modifications to suit the needs of the weather animations.
+ * A conveyor class that manages the animation of multiple ContentsAnim objects on a canvas. It provides methods to draw the animations, manage visibility, and add the canvas to a parent pane.
+ * Unlike the AnimationManager, this class handles the JavaFX canvas and the drawing of the images, while the AnimationManager is responsible for updating the animation indices of the ContentsAnim objects.
+ * The AnimationConveyor class uses an AnimationTimer to continuously update and draw the animations on the canvas. It also allows for customization of font styling for any text that may be drawn on the canvas.
+ * The class provides methods to set the visibility of the canvas, retrieve the canvas, and add the canvas to a parent pane. It also includes an enumeration for local font formats, allowing for easy customization of text appearance.
+ */
 public class AnimationConveyor {
     
     private final Canvas canvas;
@@ -36,7 +44,9 @@ public class AnimationConveyor {
     private boolean shouldDraw=true;
 
     /**
-     * a constructor for the AnimationConveyor class.
+     * This particular conveyor is only used in MainMenuController.java, and is not used in the WeatherDashboardController.java. Its parallel in weather is WeatherCanvasView.java, which is a copy of this class, but with some modifications to suit the needs of the weather animations.
+     * Constructs an AnimationConveyor with the specified list of ContentsAnim items, position, sprite dimensions, and weather drawing state. The conveyor manages the animation of the provided items on a canvas, allowing for customization of font styling and visibility.
+     * The WeatherDashboardController uses a different conveyor class, AnimationConveyorW, which is specifically designed for weather animations.
      * 
      * @param x       the x-coordinate of the canvas
      * @param y       the y-coordinate of the canvas
@@ -45,8 +55,6 @@ public class AnimationConveyor {
      * @param ws      the weather drawing state
      */
     public AnimationConveyor(ArrayList<ContentsAnim> items,double x, double y, int spriteW, int spriteH) {
-        // shouldDraw = ws.badDraw;
-        // if(ws.badDraw ==) shouldDraw =false;
         // _____________________________________________________________________
         // _____________________________________________________________________
         // I can port this over later to have user options for text types/fonts.

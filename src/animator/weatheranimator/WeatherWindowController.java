@@ -18,16 +18,21 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import util.ImageGrabber;
 import java.awt.Desktop;
+
+/**
+ * A window controller meant to keep track of higher level items at the window
+ * level.
+ * subcomponents include buttons and the WeatherDashBoardController which is
+ * embedded inside of this unit controller. 
+ * 
+ */
+
 public class WeatherWindowController {
 
+    /**
+     * @param weatherDashboardController the WeatherDashboardController instance that manages the weather dashboard UI and functionality.
+     */
     WeatherDashboardController weatherDashboardController;
-
-    /**
-     */
-    /**
-     * A controller who holds Conceyors and Buttons.
-     * weatherDashboardControllerW
-     */
 
     Pane root;
 
@@ -51,10 +56,16 @@ public class WeatherWindowController {
     private double screenHeight;
 
     private boolean showForcast = false;
+
+    /**
+     * @param shutdownL a list of Runnable tasks that will be executed when the application is shutting down.
+     */
     private ArrayList<Runnable> shutdownL = new ArrayList<>();
 
     Image taskbarImg = ImageGrabber.getImage("/images/menu", "taskbar", ".png");
-    
+    /**
+     * @param couldUpdateApp a boolean flag indicating whether the application can be updated, which affects the visibility of the update button in the taskbar.
+     */
     private boolean couldUpdateApp;
 
     /**
@@ -91,7 +102,9 @@ public class WeatherWindowController {
         private Button closeButton;
         private Button minimizeButton;
         private Button forecastButton;
+        /*** @param updateButton a button that allows the user to check for updates to the application. It is only visible if the application can be updated.*/
         private Button updateButton;
+
         ImageView taskbarView;
 
         CustomTaskBar(Pane root, ArrayList<Runnable> shutdownL) {
@@ -184,7 +197,6 @@ public class WeatherWindowController {
 
             forecastButton.setOnMouseClicked(event -> {
                 weatherDashboardController.onForecastPressed();
-                // showForcast=true;
                 if (showForcast) {
                     weatherDashboardController.setForecastExpanded(false);
                     showForcast = false;
@@ -217,12 +229,13 @@ public class WeatherWindowController {
 
         }
     }
-
+    /**
+     * @param taskBar                  a custom taskbar component that provides window control buttons and other UI elements.
+     */
     CustomTaskBar taskBar;
 
 
     public void start() {
-        // applicationContext.
         Pane root = new Pane();
 
         root.setBackground(Background.EMPTY); // or null
@@ -301,9 +314,6 @@ public class WeatherWindowController {
         button.setOnMouseExited(e -> button.setStyle(baseStyle));
     }
 
-    // public ManagerAnimation getAnimationManager() {
-    // return animationManager;
-    // }
 
     private void installDragBehavior() {
         Runnable dragHandler = () -> {

@@ -13,13 +13,11 @@ import javafx.scene.text.Font;
 import util.ImageGrabber;
 
 /**
- * A class to manage and display animated content on a canvas.
- *  * Admittedly this singular object could inherit from its more general class, 'AnimationConveyor'. Instead this is copy pasted and mutated for singular use
-
- */
-/**
- * A container who holds the 
- * AnimationConveyorW
+ * This class is the Canvas View which iterates through the WeatherDrawingState and draws the appropriate weather animation slides on the canvas which are held in the AnimationHandler.
+ * a view class that represents a weather animation unit on a canvas. It manages the drawing of weather animations based on the provided weather drawing state and handles the visibility and update state of the animation unit.
+ * The WeatherCanvasView class uses an AnimationHandler to manage the animation of multiple ContentsAnim objects on the canvas. It provides methods to draw the animations, manage visibility, and add the canvas to a parent pane. The class also allows for customization of font styling for any text that may be drawn on the canvas.
+ * The WeatherCanvasView class is responsible for creating and managing the canvas, graphics context, and animation timer that continuously updates and draws the animations on the canvas. It provides methods to set the visibility of the canvas, retrieve the canvas, and add the canvas to a parent pane.
+ * WeatherCanvasView
  */
 public class WeatherCanvasView {
 
@@ -50,7 +48,7 @@ public class WeatherCanvasView {
     private boolean shouldDraw = true;
 
     /**
-     * a constructor for the AnimationConveyor class.
+     * a constructor for the WeatherCanvasView class that takes in position, sprite dimensions, and weather drawing state. It initializes the canvas, animation handler, graphics context, and font styling. The constructor also starts the animation timer to continuously update and draw the animations on the canvas.
      * 
      * @param x       the x-coordinate of the canvas
      * @param y       the y-coordinate of the canvas

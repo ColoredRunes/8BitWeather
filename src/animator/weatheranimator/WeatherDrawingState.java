@@ -5,7 +5,8 @@ import java.util.Date;
 import weather.WeatherData;
 
 /**
- * A drawing state argued to 
+ * A class that represents the drawing state of weather animations based on the provided weather data and conditions. It determines which weather elements (rain, snow, wind, clouds, fog, lightning, etc.) should be drawn based on the weather ID and other parameters. The class also provides methods to copy the state from another WeatherDrawingState instance and to retrieve the current weather data.
+ * WeatherDrawingState is used to manage the visual representation of weather conditions in the application, allowing for dynamic updates based on real-time weather data.
  */
 public class WeatherDrawingState {
 
@@ -40,7 +41,6 @@ public class WeatherDrawingState {
     public boolean connectError;
     public boolean limitError;
 
-    // public String c = Calendar.get(Calendar.DAY_OF_WEEK);
     public WeatherData getWeatherData() {
         return weatherData;
     }
@@ -65,10 +65,10 @@ public class WeatherDrawingState {
     }
 
     /**
-     * WeatherDrawState which can become configured by simply arguing the
-     * weathercode. This state determines draw logic for the Icon unit.
-     * 
-     * @param weatherID OpenWeather API call.ID
+     * Constructs a WeatherDrawingState object based on the provided weather data, night indicator, and day of the week. It initializes the drawing state by determining which weather elements should be drawn based on the weather ID and other parameters.
+     * @param weatherData the WeatherData object containing the weather information
+     * @param isNight an integer indicating whether it is night (1) or day (0)
+     * @param day an integer representing the day of the week (1 for Monday, 2 for Tuesday, etc.)
      */
 
     public WeatherDrawingState(WeatherData weatherData, int isNight, int day) {

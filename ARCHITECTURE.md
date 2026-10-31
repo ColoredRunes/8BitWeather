@@ -1,0 +1,91 @@
+
+Rendering Architecture:
+
+App
+└── WeatherWindowController
+    ├── CustomTaskBar
+    │   ├── closeButton
+    │   ├── minimizeButton
+    │   ├── forecastButton
+    │   └── updateButton
+    └── WeatherDashboardController
+        ├── todayAnimationUnit : WeatherCanvasView
+        │   ├── Canvas
+        │   ├── AnimationHandler
+        │   │   ├── tree : ContentsAnim
+        │   │   ├── details : ContentsAnim
+        │   │   ├── cloud0 / cloud1 / cloud2 / cloud3 / cloud4 : ContentsAnim
+        │   │   ├── lightning : ContentsAnim
+        │   │   ├── wind : ContentsAnim
+        │   │   ├── fog : ContentsAnim
+        │   │   ├── night : ContentsAnim
+        │   │   ├── ground_snow : ContentsAnim
+        │   │   ├── error : ContentsAnim
+        │   │   ├── connectionError : ContentsAnim
+        │   │   ├── rain1 / rain2 / rain3 / rain4 : ContentsAnim
+        │   │   ├── snow1 / snow2 / snow3 / snow4 : ContentsAnim
+        │   │   └── drawListInternal : ArrayList<ContentsAnim>
+        │   │       └── each item is a frame-sequence sprite
+        │   │
+        │   └── draw()  → iterates drawListInternal and paints current image
+        │
+        └── forecastAnimations[4] : WeatherCanvasView
+            └── same structure as todayAnimationUnit
+
+
+
+
+
+
+FULL ARCHITECTURE
+src/
+├── Main.java                       # JavaFX app entry point
+│
+├── engine/
+│   ├── App.java                   # Application bootstrap and stage lifecycle
+│   ├── ApplicationContext.java    # Shared state for screen size + weather drawing state
+│   └── Version.java              # Version string
+│
+├── mainmenu/
+│   └── MainMenuController.java    # City-entry startup screen
+│
+├── animator/
+│   ├── ContentsAnim.java          # Sprite frame container (one animation strip)
+│   ├── interfacewindow/
+│   │   └── ClosableFactory.java  # Close-button factory
+│   ├── mainmenu/
+│   │   ├── AnimationConveyor.java
+│   │   └── AnimationManager.java
+│   └── weatheranimator/
+│       ├── AnimationHandler.java  # Manages all weather visual elements
+│       ├── WeatherCanvasView.java # Canvas + drawing loop for one day
+│       ├── WeatherDashboardController.java # Today + forecast collection
+│       ├── WeatherDrawingState.java # Weather state used by renderer
+│       └── WeatherWindowController.java # Top-level floating weather window
+│
+├── weather/
+│   ├── ApiKey.java
+│   ├── ForecastResponse.java
+│   ├── OneCallResponse.java
+│   ├── WeatherClient.java
+│   ├── WeatherData.java
+│   ├── WeatherPoller.java
+│   ├── WeatherResponse.java
+│   └── ...                     # Weather API data models
+│
+├── util/
+│   ├── Controller.java
+│   ├── Debug.java
+│   ├── ImageGrabber.java
+│   └── TaskbarInfo.java
+│
+├── ui/
+│   └── Button.java
+│
+├── debug/
+│   └── Debuggable.java
+│
+├── global/
+│   └── GlobalDebug.java
+│
+└── ... (root-level resource/config files outside src)

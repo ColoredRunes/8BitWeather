@@ -8,13 +8,14 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 
-
 import animator.ContentsAnim;
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
-//  *  * Admittedly this singular object could inherit from its more general class, 'AnimationManager'. Instead this is copy pasted and mutated for singular use
+
 /**
- * A manager for the contents of animations who
+ * A manager class that handles the updating of animation indices for multiple
+ * ContentsAnim objects. It provides methods to start the animation timer,
+ * AnimationHandler
  */
 public class AnimationHandler  {
 
