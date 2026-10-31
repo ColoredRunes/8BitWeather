@@ -1,0 +1,9 @@
+package util;
+
+public class Debug {
+    public static boolean debug = true;
+    public static void print (String s){
+        if (debug)
+            System.out.println(s);
+    }
+}

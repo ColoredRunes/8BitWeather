@@ -23,11 +23,13 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class MainMenuController {
+    
     Scene scene;
     @SuppressWarnings("unused")
     private ApplicationContext applicationContext;
     AnimationConveyor conveyor;
-
+    Button confirmButton;
+    TextField textBox;
     public MainMenuController(App app, ApplicationContext applicationContext, Stage stage) {
         start(app, stage);
         this.applicationContext = applicationContext;
@@ -52,9 +54,9 @@ public class MainMenuController {
                     };
                 }
         }, new int[] { 20, 0 });
-        Button btn1 = new Button("Start");
+        confirmButton = new Button("Start");
+        confirmButton.setOpacity(.8);
 
-        btn1.setOpacity(.8);
         closeButton.setOpacity(.8);
 
         // Layout container
@@ -67,7 +69,7 @@ public class MainMenuController {
 
         conveyor.addToRoot(root);
 
-        TextField textBox = new TextField();
+        textBox = new TextField();
         textBox.setAlignment(Pos.CENTER);
         textBox.setMaxSize(200, 30);
         textBox.setPromptText("Enter a City");
@@ -81,8 +83,8 @@ public class MainMenuController {
                 submitCity(app, stage, textBox);
             }
         });
-        btn1.setOnAction(e -> submitCity(app, stage, textBox));
-        root.getChildren().add(btn1);
+        confirmButton.setOnAction(e -> submitCity(app, stage, textBox));
+        root.getChildren().add(confirmButton);
 
         // Scene
         Scene scene = new Scene(root, 300, 200);
@@ -113,18 +115,24 @@ public class MainMenuController {
     public void initAnimator(App app, Stage stage, String city) {
         String normalizedCity = city.replaceAll("\\s+", " ").replace(" ", "%20");
         String oldCity = app.applicationContext.city;
+        confirmButton.setDisable(true);
+        textBox.setDisable(true);
         app.weatherPoller.start(normalizedCity, ok -> Platform.runLater(() -> {
             if (!ok) {
                 if (oldCity != null)
                     app.weatherPoller.start(oldCity, x -> {
-                    });
-                else
-                    app.weatherPoller.cancel();
+            });
+            else{
+                app.weatherPoller.cancel();
+            }
+                confirmButton.setDisable(true);
+                textBox.setDisable(true);
                 toast(stage, "❌ Try format: Los Angeles,CA");
                 return;
             }
             app.applicationContext.city = normalizedCity;
             app.weatherWindowController.start();
+            
             // app.animationController.start();
         }));
     }

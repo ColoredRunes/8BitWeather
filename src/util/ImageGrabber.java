@@ -3,7 +3,12 @@ package util;
 import javafx.scene.image.Image;
 
 public class ImageGrabber {
-
+    /**
+     * @param base ex: "/images/menu"
+     * @param file_base_name ex: "menu"
+     * @param fileType ex: ".png"
+     * @return
+     */
     public static Image getImage(String base,String file_base_name,String fileType) {
 
         
@@ -13,6 +18,7 @@ public class ImageGrabber {
                 base = base + "/";
             }
             String p = base + file_base_name + fileType;
+            util.Debug.print(p);
             Image im = new Image(ImageGrabber.class.getResourceAsStream(p));
             return im;
         }

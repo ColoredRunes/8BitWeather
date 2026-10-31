@@ -71,10 +71,16 @@
             "command": "jpackage --name \"8 Bit Weather\" --input dist --main-jar app.jar --main-class Main --icon _launch4j\\icon.ico --type app-image --dest package"
         },
         {
+            "label": "_write_txt_version",
+            "type": "shell",
+            "detail": "Rewrite deployed web version.txt file. Corresponds to current version.",
+            "command": "echo ${input:appVersion}> public\\version.txt"
+        },
+        {
             "label": "_set-version",
             "type": "shell",
             "detail": "Prompt for a version, write it to the .aip, and generate a new Product Code.",
-            "command": "for /d %i in (\"%ProgramFiles(x86)%\\Caphyon\\Advanced Installer *\") do if exist \"%i\\bin\\x86\\AdvancedInstaller.com\" \"%i\\bin\\x86\\AdvancedInstaller.com\" /edit \"C:\\Dev\\Java\\Ant\\installer\\8 Bit Weather.aip\" /SetVersion ${input:appVersion} && \"%i\\bin\\x86\\AdvancedInstaller.com\" /edit \"C:\\Dev\\Java\\Ant\\installer\\8 Bit Weather.aip\" /SetProductCode",
+            "command": "for /d %i in (\"%ProgramFiles(x86)%\\Caphyon\\Advanced Installer *\") do if exist \"%i\\bin\\x86\\AdvancedInstaller.com\" \"%i\\bin\\x86\\AdvancedInstaller.com\" /edit \"C:\\Dev\\Java\\Ant\\installer\\8 Bit Weather.aip\" /SetVersion ${input:appVersion} && \"%i\\bin\\x86\\AdvancedInstaller.com\" /edit \"C:\\Dev\\Java\\Ant\\installer\\8 Bit Weather.aip\" /SetProductCode -langid 1033",
             "windows": {
                 "options": {
                     "shell": {
@@ -125,42 +131,11 @@
             ]
         },
         {
-            "label": "_sign",
-            "type": "shell",
-            "detail": "Sign the existing MSI with signtool. Runs standalone, no build.",
-            "command": "C:\\Program Files (x86)\\Windows Kits\\10\\App Certification Kit\\signtool.exe",
-            "args": [
-                "sign",
-                "/f",
-                "C:\\Dev\\Java\\Ant\\installer\\8BitWeather.pfx",
-                "/p",
-                "${input:pfxPassword}",
-                "/fd",
-                "SHA256",
-                "/t",
-                "http://timestamp.digicert.com",
-                "C:\\Dev\\Java\\Ant\\installer\\8 Bit Weather-SetupFiles\\8 Bit Weather.msi"
-            ],
-            "windows": {
-                "options": {
-                    "shell": {
-                        "executable": "cmd.exe",
-                        "args": [
-                            "/d",
-                            "/c"
-                        ]
-                    }
-                }
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "build_and_sign",
+            "label": "build",
             "detail": "Complete pipeline: build Java binaries, compile the MSI, then sign it.",
             "dependsOrder": "sequence",
             "dependsOn": [
                 "_build-msi",
-                "_sign"
             ],
             "group": {
                 "kind": "build",
@@ -188,6 +163,5 @@
             "description": "Version number (e.g. 1.0.3)",
             "default": "1.0.3"
         }
-        
     ]
 }

@@ -1,0 +1,8 @@
+{
+  "Debug print": {
+    "prefix": ["Debug.print", "debug"],
+    "body": ["util.Debug.print($1);"],
+    "description": "Debug.print()",
+  }
+  
+}

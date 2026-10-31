@@ -1,8 +1,11 @@
 package engine;
 
 import java.io.File;
-
-import animator.weatheranimator.WeatherDashboardController;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import animator.weatheranimator.WeatherWindowController;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -38,12 +41,10 @@ public class App extends Application {
         applicationContext.screenWidth = screenWidth;
         applicationContext.screenHeight = screenHeight;
 
-        weatherWindowController = new WeatherWindowController(this, applicationContext, primaryStage);
+        weatherWindowController = new WeatherWindowController(this, applicationContext, primaryStage,getCouldUpdate("1.2.0"));
         mainMenuController  = new MainMenuController(this,applicationContext,primaryStage);
-        // animationController.show();
-        // Will need to send each one to the poller
-        weatherPoller = new WeatherPoller(weatherWindowController.getWeatherDashboardController(), applicationContext.weatherDrawingState,
-                applicationContext.DOWDrawingStates);
+
+        weatherPoller = new WeatherPoller(weatherWindowController.getWeatherDashboardController(), applicationContext.weatherDrawingState, applicationContext.DOWDrawingStates);
         // Do not show the weather stage until the user has entered a valid city.
         Runnable r = () -> weatherPoller.stop();
         weatherWindowController.addShutDownListener(r);
@@ -56,7 +57,36 @@ public class App extends Application {
         });
 
     }
+    /**
+     * 
+     * @param version This argument should be modified on every update
+     * @return boolean determining if the app should show that the app needs to be updated.
+     */
+    private boolean getCouldUpdate(String version){
+        URI numUri = URI.create("https://bit-weather-b7bb3.web.app/version.txt");
 
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder(numUri).build();
+
+        try {
+            HttpResponse<String> response =
+                client.send(request, HttpResponse.BodyHandlers.ofString());
+                if (response.statusCode() == 200 && !response.body().trim().equals(version)) {
+                    util.Debug.print(version + "?=" + response.body().trim());
+                    return true;
+                }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return false;
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return false;
+        }
+        return false;
+        // if ()
+    }
     @Override
     public void stop() {
         if (weatherPoller != null) {

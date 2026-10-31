@@ -1,14 +1,14 @@
 package animator.weatheranimator;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 import engine.ApplicationContext;
-import engine.UpdateButton;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.geometry.Dimension2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -17,7 +17,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import util.ImageGrabber;
-
+import java.awt.Desktop;
 public class WeatherWindowController {
 
     WeatherDashboardController weatherDashboardController;
@@ -54,12 +54,44 @@ public class WeatherWindowController {
     private ArrayList<Runnable> shutdownL = new ArrayList<>();
 
     Image taskbarImg = ImageGrabber.getImage("/images/menu", "taskbar", ".png");
+    
+    private boolean couldUpdateApp;
 
-    class CustomTaskBar {
+    /**
+     * A window controller meant to keep track of higher level items at the window
+     * level.
+     * subcomponents include buttons and the WeatherDashBoardController which is
+     * embedded inside of this unit controller.
+     * 
+     * @param app
+     * @param appContext
+     * @param stage
+     */
+    public WeatherWindowController(
+            Application app,
+            ApplicationContext appContext,
+            Stage stage,
+            boolean couldUpdateApp
+        ) {
+        this.stage = stage;
+        this.couldUpdateApp = couldUpdateApp;
+
+        weatherDashboardController = new WeatherDashboardController(app, appContext, CustomTaskBar.height);
+
+        double screenWidth = appContext.screenWidth;
+        double screenHeight = appContext.screenHeight;
+
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+
+    }
+
+
+    private class CustomTaskBar {
         private Button closeButton;
         private Button minimizeButton;
         private Button forecastButton;
-        private UpdateButton updateButton;
+        private Button updateButton;
         ImageView taskbarView;
 
         CustomTaskBar(Pane root, ArrayList<Runnable> shutdownL) {
@@ -76,11 +108,13 @@ public class WeatherWindowController {
         }
 
         public static int height = 25;
-
+        
+        @SuppressWarnings("unused")
         public int getHeight() {
             return CustomTaskBar.height;
         }
 
+        @SuppressWarnings("unused")
         public int getWidth() {
             return animWidth;
         }
@@ -89,8 +123,10 @@ public class WeatherWindowController {
             this.minimizeButton = new Button("-");
             this.closeButton = new Button("x");
             this.forecastButton = new Button("📅");
-            this.updateButton = new UpdateButton("up");
+            this.updateButton = getUpdateButton();
 
+            
+            
             double buttonSize = height - 6;
 
             for (Button button : new Button[] {
@@ -106,15 +142,18 @@ public class WeatherWindowController {
 
             // ..________________ positioning of elements _______________..//
             closeButton.setLayoutX(animWidth - 22);
-            forecastButton.setLayoutX(3);
-            forecastButton.setLayoutX(23);
             minimizeButton.setLayoutX(animWidth - 42);
+            forecastButton.setLayoutX(3);
+            updateButton.setLayoutX(23);
 
             updateButton.setLayoutY(3);
             closeButton.setLayoutY(3);
             forecastButton.setLayoutY(3);
             minimizeButton.setLayoutY(3);
 
+            // ..________________________ Tool tip  ________________________..//
+
+            updateButton.setTooltip(new Tooltip("New Update Available"));
             // ..________________ styling and styling events _______________..//
 
             installButtonStyling(closeButton);
@@ -154,48 +193,33 @@ public class WeatherWindowController {
                     showForcast = true;
                 }
             });
+            updateButton.setOnMouseClicked(e->{
+                try {
+                    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                        Desktop.getDesktop().browse(URI.create("https://8-bit-weather.com/update.html"));
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            });
             stage.iconifiedProperty().addListener((obs, oldValue, newValue) -> {
                 if (newValue) {
                     stage.setIconified(false); // block minimize
                 }
             });
-
+            
             // ..________________ adding to containers _______________..//
             root.getChildren().add(closeButton);
             root.getChildren().add(minimizeButton);
             root.getChildren().add(forecastButton);
-            root.getChildren().add(updateButton);
+            if(couldUpdateApp)
+                root.getChildren().add(updateButton);
 
         }
     }
 
     CustomTaskBar taskBar;
 
-    /**
-     * A window controller meant to keep track of higher level items at the window
-     * level.
-     * subcomponents include buttons and the WeatherDashBoardController which is
-     * embedded inside of this unit controller.
-     * 
-     * @param app
-     * @param appContext
-     * @param stage
-     */
-    public WeatherWindowController(
-            Application app,
-            ApplicationContext appContext,
-            Stage stage) {
-        this.stage = stage;
-
-        weatherDashboardController = new WeatherDashboardController(app, appContext, CustomTaskBar.height);
-
-        double screenWidth = appContext.screenWidth;
-        double screenHeight = appContext.screenHeight;
-
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
-
-    }
 
     public void start() {
         // applicationContext.
@@ -334,5 +358,21 @@ public class WeatherWindowController {
     public WeatherDashboardController getWeatherDashboardController() {
         return weatherDashboardController;
     }
+    private Button getUpdateButton(){
 
+        Image image = ImageGrabber.getImage("/images/menu", "updatebutton", ".png");
+        ImageView imageView = new ImageView(image);
+
+        // Optionally resize the image
+        imageView.setFitWidth(16);
+        imageView.setFitHeight(16);
+        imageView.setPreserveRatio(true);
+
+        // Create the button and set the graphic
+        Button button = new Button();
+        button.setGraphic(imageView);
+
+        return button;
+
+    }
 }

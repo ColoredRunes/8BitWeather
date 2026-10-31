@@ -12,11 +12,11 @@ C:\Dev\Java\Ant\src\animator\weatheranimator\WeatherWindowController.java
 C:\Dev\Java\Ant\src\debug\Debuggable.java
 C:\Dev\Java\Ant\src\engine\App.java
 C:\Dev\Java\Ant\src\engine\ApplicationContext.java
-C:\Dev\Java\Ant\src\engine\UpdateButton.java
 C:\Dev\Java\Ant\src\global\GlobalDebug.java
 C:\Dev\Java\Ant\src\mainmenu\MainMenuController.java
 C:\Dev\Java\Ant\src\ui\Button.java
 C:\Dev\Java\Ant\src\util\Controller.java
+C:\Dev\Java\Ant\src\util\Debug.java
 C:\Dev\Java\Ant\src\util\ImageGrabber.java
 C:\Dev\Java\Ant\src\util\TaskbarInfo.java
 C:\Dev\Java\Ant\src\weather\ApiKey.java

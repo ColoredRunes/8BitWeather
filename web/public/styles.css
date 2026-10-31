@@ -86,3 +86,20 @@ footer {
   margin: 0 auto;
   max-width: fit-content;
 }
+.notes {
+    height: 2.8em;
+    line-height: 1.4;
+    overflow-y: auto;
+    padding: 6px 8px;
+    border: 1px solid #888;
+    border-radius: 4px;
+    box-sizing: content-box;
+}
+.box {
+    border: 1px solid #888;
+    border-radius: 6px;
+    padding: 12px;
+   
+    margin-bottom: 16px;
+
+}
