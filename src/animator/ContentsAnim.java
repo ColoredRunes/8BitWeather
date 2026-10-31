@@ -104,7 +104,6 @@ public class ContentsAnim implements Cloneable {
                 // reuse same path/base/size
                 // but skip reloading images
                 "", this.imageArray.length, startFrame, this.index.speed);
-
         // reuse the same image array (images are immutable)
         c.imageArray = this.imageArray;
 
