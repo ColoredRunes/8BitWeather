@@ -9,6 +9,9 @@ import weather.WeatherPoller;
  * ApplicationContext
  */
 public class ApplicationContext {
+    
+    public String version = Version.version;
+
     public String city = "Los%20Angeles";
     public boolean offline = false;
     public WeatherPoller weatherPoller;

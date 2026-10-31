@@ -41,7 +41,7 @@ public class App extends Application {
         applicationContext.screenWidth = screenWidth;
         applicationContext.screenHeight = screenHeight;
 
-        weatherWindowController = new WeatherWindowController(this, applicationContext, primaryStage,getCouldUpdate("1.2.0"));
+        weatherWindowController = new WeatherWindowController(this, applicationContext, primaryStage,getCouldUpdate(applicationContext.version));
         mainMenuController  = new MainMenuController(this,applicationContext,primaryStage);
 
         weatherPoller = new WeatherPoller(weatherWindowController.getWeatherDashboardController(), applicationContext.weatherDrawingState, applicationContext.DOWDrawingStates);

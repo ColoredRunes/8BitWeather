@@ -44,7 +44,8 @@
             "label": "_compile",
             "type": "shell",
             "detail": "Compile all Java source files from src into the out directory using project libraries.",
-            "command": "dir /s /b src\\*.java > sources.txt && javac -d out -cp \"libs/*\" @sources.txt"
+            "command": "dir /s /b src\\*.java > sources.txt && javac -d out -cp \"libs/*\" @sources.txt",
+            "dependsOn":["_write_java_version"]
         },
         {
             "label": "_copy-resources-to-out",
@@ -105,7 +106,8 @@
                 "_copy-resources-to-out",
                 "_prepare-dist",
                 "_jar",
-                "_jpackage"
+                "_jpackage",
+                "_write_txt_version"
             ]
         },
         {
@@ -142,6 +144,12 @@
                 "isDefault": true
             },
             "problemMatcher": []
+        },
+        {
+            "label": "_write_java_version",
+            "type": "shell",
+            "detail": "Rewrite Version.java to the current app version.",
+            "command": "powershell -NoProfile -Command \"(Get-Content src\\engine\\Version.java -Raw) -replace '(?<=version = \\x22)[^\\x22]*(?=\\x22)', '${input:appVersion}' | Set-Content src\\engine\\Version.java -NoNewline\""
         }
     ],
     "inputs": [
