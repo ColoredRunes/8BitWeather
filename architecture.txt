@@ -1,5 +1,11 @@
 
+This app is a JavaFX desktop weather renderer built around a central app bootstrap 
+in App.java, a starter menu in MainMenuController.java, a weather window controller 
+in WeatherWindowController.java, and a sprite-based weather animation system driven 
+by AnimationHandler.java and ContentsAnim.java.
+
 Rendering Architecture:
+
 
 App
 └── WeatherWindowController

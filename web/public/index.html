@@ -24,56 +24,67 @@
         <a class="sitebutton" href="info.html">Info</a>
         <a class="sitebutton" href="legal.html">Legal</a>
         <a class="sitebutton" href="version.html">Version</a>
-        <!-- <!-- <a class="sitebutton" href="about.html">About</a> -->
 
     </nav>
 
-    <main>
+    <main style="justify-content: center;">
 
-        <h1 style="font-family: 'PixelFont', sans-serif;">8 Bit Weather</h1>
+        <div class="sidebox">
+            <img style="max-width: 10%;min-width: 10%; margin-top: 5%;" src="webimages/liveexample2.gif"
+                alt="8 Bit Weather screenshot">
 
-        <p>
-            <img src="webimages/gifsample.gif" alt="8 Bit Weather screenshot">
-        </p>
 
-        <p>A retro weather application for Windows.</p>
+            <div >
 
-        <!-- DOWNLOAD BUTTON -->
-        <img style="max-width: 3%;" src="webimages/icon.png" alt="8 Bit Weather screenshot">
-        <a id="dl" class="sitebutton" href="8BitWeather-Setup-latest.msi">
-             Download for Windows
-        </a>
+                <h1 style="font-family: 'PixelFont', sans-serif;">8 Bit Weather</h1>
 
-        <!-- DOWNLOAD COUNT -->
-        <p>
-        <div id="ct"></div>
-        </p>
+                <p>
+                    <img src="webimages/gifsample.gif" alt="8 Bit Weather screenshot">
+                </p>
 
-        <!-- OPENWEATHER MAIN -->
-        <p>
-            Weather data provided by
-            <a style="font-family: 'PixelFont', sans-serif;" href="https://openweathermap.org/" target="_blank"
-                rel="noopener noreferrer">
-                OpenWeather
-            </a>
-        </p>
-        <!-- PERSONAL WEBSITE MAIN -->
-        <p>
-            created by
-            <a style="font-family: 'PixelFont', sans-serif;" href="https://david-burns-art.com/" target="_blank"
-                rel="noopener noreferrer">
-                David Burns
-            </a>
-        </p>
-        <!-- GITHUB -->
+                <p>A simple and retro weather application for Windows.</p>
 
-        <p>
-            app
-            <a style="font-family: 'PixelFont', sans-serif;" href="https://github.com/ColoredRunes/8BitWeather"
-                target="_blank" rel="noopener noreferrer">
-                Git Repository
-            </a>
-        </p>
+                <!-- DOWNLOAD BUTTON -->
+                <img style="max-width: 3%;" src="webimages/icon.png" alt="8 Bit Weather screenshot">
+                <a id="dl" class="sitebutton" href="8BitWeather-Setup-latest.msi">
+                    Download for Windows
+                </a>
+
+                <!-- DOWNLOAD COUNT -->
+                <p>
+                <div id="ct"></div>
+                </p>
+
+                <!-- OPENWEATHER MAIN -->
+                <p>
+                    Weather data provided by
+                    <a style="font-family: 'PixelFont', sans-serif;" href="https://openweathermap.org/" target="_blank"
+                        rel="noopener noreferrer">
+                        OpenWeather
+                    </a>
+                </p>
+                <!-- PERSONAL WEBSITE MAIN -->
+                <p>
+                    App created by
+                    <a style="font-family: 'PixelFont', sans-serif;" href="https://david-burns-art.com/" target="_blank"
+                        rel="noopener noreferrer">
+                        David Burns
+                    </a>
+                </p>
+                <!-- GITHUB -->
+
+                <p>
+                    App
+                    <a style="font-family: 'PixelFont', sans-serif;" href="https://github.com/ColoredRunes/8BitWeather"
+                        target="_blank" rel="noopener noreferrer">
+                        Git Repository
+                    </a>
+                </p>
+            </div>
+                        <img style="max-width: 10%;min-width: 10%; margin-top: 5%;" src="webimages/liveexample2.gif"
+                alt="8 Bit Weather screenshot">
+
+        </div>
     </main>
     <footer>
         <p>© 2026 Code Chicken</p>
@@ -89,23 +100,23 @@
         </p>
 
     </footer>
+<script type="module">
+    import { db } from "./firebase.js";
+    import { doc, updateDoc, increment, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    <script type="module">
-        import { db } from "./firebase.js";
-        import { doc, updateDoc, increment, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    const isMe = localStorage.getItem("isOwner") === "1";
 
-        updateDoc(doc(db, "counters", "visits"), { count: increment(1) });
+    if (!isMe) updateDoc(doc(db, "counters", "visits"), { count: increment(1) });
 
-        getDoc(doc(db, "counters", "downloads")).then(snap => {
-            document.getElementById("ct").innerHTML = "Total Downloads: " + snap.data().count;
-        });
+    getDoc(doc(db, "counters", "downloads")).then(snap => {
+        document.getElementById("ct").innerHTML = "Total Downloads: " + snap.data().count;
+    });
 
+    if (!isMe)
         document.getElementById("dl").addEventListener("click", () => {
             updateDoc(doc(db, "counters", "downloads"), { count: increment(1) });
         });
-
-
-    </script>
+</script>
     <script type="module" src="exit-intent.js"></script>
 
 </body>

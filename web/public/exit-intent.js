@@ -25,7 +25,7 @@ import {
 
     const comment =
       document.getElementById("extraComment").value.trim();
-
+    
     console.log("Reason:", reason, "| Comment:", comment);
 
     try {
@@ -56,11 +56,12 @@ import {
         <p>Why did you decide not to download?</p>
 
         <div class="options">
-          <label><input type="radio" name="reason" value="unwanted"> Don't need it</label>
-          <label><input type="radio" name="reason" value="dislike"> Don't like it</label>
-          <label><input type="radio" name="reason" value="sketchy"> Looks sketchy</label>
-          <label><input type="radio" name="reason" value="justlooking"> Just wanted to look</label>
-          <label><input type="radio" name="reason" value="other"> Other</label>
+          <label><input type="radio" name="reason" value="downloaded">✅I did download it</label>
+          <label><input type="radio" name="reason" value="unwanted">❌not interested</label>
+          <label><input type="radio" name="reason" value="dislike">❌doesnt meet my needs</label>
+          <label><input type="radio" name="reason" value="sketchy">❌seems kinda sketchy</label>
+          <label><input type="radio" name="reason" value="justlooking">❌just wanted to look</label>
+          <label><input type="radio" name="reason" value="other"> other</label>
         </div>
 
         <textarea
@@ -97,7 +98,7 @@ import {
       }
 
       .modal {
-        background: #430505;
+        background: #00500f;
         border-radius: 12px;
         
         padding: 32px;

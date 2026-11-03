@@ -20,8 +20,8 @@ import javafx.scene.layout.Pane;
  */
 public class WeatherDashboardController {
 
-    public final WeatherCanvasView todayAnimationUnit;
-    public final WeatherCanvasView[] forecastAnimations = new WeatherCanvasView[4];
+    public WeatherCanvasView todayAnimationUnit;
+    public WeatherCanvasView[] forecastAnimations = new WeatherCanvasView[4];
 
     WeatherDrawingState[] daysOfWeekStates;
 
@@ -50,13 +50,38 @@ public class WeatherDashboardController {
 
         sprWidth = 128;
         sprHeight = 128;
-
-        todayAnimationUnit = new WeatherCanvasView(0, taskbarOffsetH, sprWidth, sprHeight, todayState);
-
+        
+        this.todayAnimationUnit = new WeatherCanvasView(0, taskbarOffsetH, sprWidth, sprHeight, todayState);
         for (int i = 0; i < daysOfWeekStates.length; i++) {
-            forecastAnimations[i] = new WeatherCanvasView(0, taskbarOffsetH+sprHeight * (i + 1), sprWidth, sprHeight, daysOfWeekStates[i]);
+            forecastAnimations[i] = new WeatherCanvasView(0, taskbarOffsetH + sprHeight * (i + 1), sprWidth, sprHeight, daysOfWeekStates[i]);
         }
+        // setWeatherLayout(true, taskbarOffsetH);
+    
+        
+    }
+    /**
+     * Method should only be called from the WeatherWindowController
+     * @param invert
+     * @param taskbarOffsetH
+     */
+    public void invertLayout(int taskbarOffsetH,boolean invert) {
+        int panelCount = 1 + daysOfWeekStates.length;
+        int totalStackHeight = panelCount * sprHeight;
 
+        for (int i = 0; i < panelCount; i++) {
+            double y;
+            if (invert) {
+                y = (totalStackHeight - sprHeight) - (i * sprHeight);
+            } else {
+                y = taskbarOffsetH + (i * sprHeight);
+            }
+
+            if (i == 0) {
+                todayAnimationUnit.setY(y);
+            } else {
+                forecastAnimations[i - 1].setY(y);
+            }
+        }
     }
 
     public void start(Pane root) {
@@ -70,8 +95,9 @@ public class WeatherDashboardController {
         }
     }
 
-
+    int v;
     public void onMinimizePressed() {
+        
             if (todayAnimationUnit.isVisible()) {
                 todayAnimationUnit.setVisible(false);
                 todayAnimationUnit.setShouldUpdate(false);

@@ -14,7 +14,8 @@ import javafx.scene.image.Image;
 
 /**
  * A manager class that handles the updating of animation indices for multiple
- * ContentsAnim objects. It provides methods to start the animation timer,
+ * ContentsAnim objects. It provides methods to start the animation timer.
+ * While this structure is admittedly straightforward, efficiency is not my main concern right now. I can optimize this later, if I want.
  * AnimationHandler
  */
 public class AnimationHandler  {
@@ -23,10 +24,10 @@ public class AnimationHandler  {
     private ContentsAnim details;
 
     private ContentsAnim cloud0;
-    private ContentsAnim cloud1; // May keep and use this to blit concurrently? // THIS MAY BE WASTE OF MEM
-    private ContentsAnim cloud2; // May keep and use this to blit concurrently?
-    private ContentsAnim cloud3; // May keep and use this to blit concurrently?
-    private ContentsAnim cloud4; // May keep and use this to blit concurrently?
+    private ContentsAnim cloud1; 
+    private ContentsAnim cloud2; 
+    private ContentsAnim cloud3; 
+    private ContentsAnim cloud4; 
 
     private ContentsAnim error;
     private ContentsAnim connectionError;

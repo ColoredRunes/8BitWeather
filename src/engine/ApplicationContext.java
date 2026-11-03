@@ -24,7 +24,7 @@ public class ApplicationContext {
         new WeatherDrawingState(new WeatherData(800, -999.0, -999.0, -999.0, -999.0),-1,-5)
         
     } ; //start sunny
-public double screenWidth;
+    public double screenWidth;
     public double screenHeight;
 
 }

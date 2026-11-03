@@ -76,16 +76,14 @@ public class App extends Application {
                     return true;
                 }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            //TODO catch should show the no internet symbol on main menu
             e.printStackTrace();
             return false;
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return false;
         }
         return false;
-        // if ()
     }
     @Override
     public void stop() {

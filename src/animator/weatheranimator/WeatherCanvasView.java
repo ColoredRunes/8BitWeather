@@ -46,6 +46,18 @@ public class WeatherCanvasView {
 
     FontFormatLocal font;
     private boolean shouldDraw = true;
+    public void setX(double x) {
+        canvas.setLayoutX(x);
+    }
+    public void setY(double y) {
+        canvas.setLayoutY(y);
+    }
+    public double getX() {
+        return canvas.getLayoutX();
+    }
+    public double getY() {
+        return canvas.getLayoutY();
+    }
 
     /**
      * a constructor for the WeatherCanvasView class that takes in position, sprite dimensions, and weather drawing state. It initializes the canvas, animation handler, graphics context, and font styling. The constructor also starts the animation timer to continuously update and draw the animations on the canvas.
@@ -125,6 +137,8 @@ public class WeatherCanvasView {
         ArrayList<ContentsAnim> list = handler.getDrawList();
         int i = 0;
         gc.drawImage(menu, 0, 0, menu.getWidth() * scale, menu.getHeight() * scale);
+
+        // This is messy and needs to be rewritten
         for (ContentsAnim animationContents : list) {
 
             Image image = animationContents.getCurrentImage();

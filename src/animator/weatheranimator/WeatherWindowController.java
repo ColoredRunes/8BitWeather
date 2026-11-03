@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import engine.ApplicationContext;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
@@ -15,9 +17,13 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import util.ImageGrabber;
+
+import java.awt.Canvas;
 import java.awt.Desktop;
+import java.awt.Taskbar;
 
 /**
  * A window controller meant to keep track of higher level items at the window
@@ -101,14 +107,14 @@ public class WeatherWindowController {
     private class CustomTaskBar {
         private Button closeButton;
         private Button minimizeButton;
-        private Button forecastButton;
+        // private Button forecastButton;
         /*** @param updateButton a button that allows the user to check for updates to the application. It is only visible if the application can be updated.*/
+        private Button invertButton;
         private Button updateButton;
 
         ImageView taskbarView;
-
+        Group container;
         CustomTaskBar(Pane root, ArrayList<Runnable> shutdownL) {
-
             taskbarView = new ImageView(taskbarImg);
 
             taskbarView.setLayoutX(0);
@@ -116,8 +122,10 @@ public class WeatherWindowController {
             taskbarView.setFitWidth(animWidth);
             taskbarView.setFitHeight(CustomTaskBar.height);
 
-            root.getChildren().add(taskbarView);
-            initButtons(root, shutdownL);
+            container = new Group(taskbarView);   // field: Group container
+            root.getChildren().add(container);
+            initButtons(container, shutdownL);    // was: root
+            
         }
 
         public static int height = 25;
@@ -131,12 +139,25 @@ public class WeatherWindowController {
         public int getWidth() {
             return animWidth;
         }
+        public double getLayoutX() {
+            return container.getLayoutX();
+        }
+        public double getLayoutY() {
+            return container.getLayoutY();
+        }
+        public void setLayoutX(double v) {
+            container.setLayoutX(v);
+        }
+        public void setLayoutY(double v) {
+            container.setLayoutY(v);
+        }
 
-        public void initButtons(Pane root, ArrayList<Runnable> shutdownL) {
+        public void initButtons(Group container, ArrayList<Runnable> shutdownL) {
             this.minimizeButton = new Button("-");
             this.closeButton = new Button("x");
-            this.forecastButton = new Button("📅");
+            // this.forecastButton = new Button("📅");
             this.updateButton = getUpdateButton();
+            this.invertButton = new Button("⇅");
 
             
             
@@ -145,8 +166,9 @@ public class WeatherWindowController {
             for (Button button : new Button[] {
                     minimizeButton,
                     closeButton,
-                    forecastButton,
-                    updateButton
+                    // forecastButton,
+                    updateButton,
+                    invertButton
             }) {
                 button.setMinSize(buttonSize, buttonSize);
                 button.setPrefSize(buttonSize, buttonSize);
@@ -156,31 +178,27 @@ public class WeatherWindowController {
             // ..________________ positioning of elements _______________..//
             closeButton.setLayoutX(animWidth - 22);
             minimizeButton.setLayoutX(animWidth - 42);
-            forecastButton.setLayoutX(3);
+            invertButton.setLayoutX(3);
+            // forecastButton.setLayoutX(3);
             updateButton.setLayoutX(23);
 
             updateButton.setLayoutY(3);
+            invertButton.setLayoutY(3);
             closeButton.setLayoutY(3);
-            forecastButton.setLayoutY(3);
+            // forecastButton.setLayoutY(3);
             minimizeButton.setLayoutY(3);
 
             // ..________________________ Tool tip  ________________________..//
 
             updateButton.setTooltip(new Tooltip("New Update Available"));
+            invertButton.setTooltip(new Tooltip("Flip forecast view"));
             // ..________________ styling and styling events _______________..//
 
             installButtonStyling(closeButton);
             installButtonStyling(updateButton);
-            installButtonStyling(forecastButton);
+            installButtonStyling(invertButton);
+            // installButtonStyling(forecastButton);
             installButtonStyling(minimizeButton);
-
-            // ..________________ visibility events _______________..//
-            root.setOnMouseEntered(e -> {
-                minimizeButton.setVisible(true);
-                closeButton.setVisible(true);
-                updateButton.setVisible(true);
-                forecastButton.setVisible(true);
-            });
 
             // ..________________ click action events _______________..//
             closeButton.setOnMouseClicked(event -> {
@@ -189,22 +207,24 @@ public class WeatherWindowController {
                     r.run();
                 }
             });
-
+            invertButton.setOnMouseClicked(event->{
+                invertLayout();
+            });
             minimizeButton.setOnMouseClicked(event -> {
                 weatherDashboardController.onMinimizePressed();
-
+                
             });
 
-            forecastButton.setOnMouseClicked(event -> {
-                weatherDashboardController.onForecastPressed();
-                if (showForcast) {
-                    weatherDashboardController.setForecastExpanded(false);
-                    showForcast = false;
-                } else {
-                    weatherDashboardController.setForecastExpanded(true);
-                    showForcast = true;
-                }
-            });
+            // forecastButton.setOnMouseClicked(event -> {
+            //     weatherDashboardController.onForecastPressed();
+            //     if (showForcast) {
+            //         weatherDashboardController.setForecastExpanded(false);
+            //         showForcast = false;
+            //     } else {
+            //         weatherDashboardController.setForecastExpanded(true);
+            //         showForcast = true;
+            //     }
+            // });
             updateButton.setOnMouseClicked(e->{
                 try {
                     if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
@@ -221,11 +241,12 @@ public class WeatherWindowController {
             });
             
             // ..________________ adding to containers _______________..//
-            root.getChildren().add(closeButton);
-            root.getChildren().add(minimizeButton);
-            root.getChildren().add(forecastButton);
+            container.getChildren().add(closeButton);
+            container.getChildren().add(minimizeButton);
+            // container.getChildren().add(forecastButton);
+            container.getChildren().add(invertButton);
             if(couldUpdateApp)
-                root.getChildren().add(updateButton);
+                container.getChildren().add(updateButton);
 
         }
     }
@@ -234,7 +255,7 @@ public class WeatherWindowController {
      */
     CustomTaskBar taskBar;
 
-
+    int fullHeight;
     public void start() {
         Pane root = new Pane();
 
@@ -242,8 +263,10 @@ public class WeatherWindowController {
 
         taskBar = new CustomTaskBar(root, this.shutdownL);
 
-        Scene scene = new Scene(root, 128, animHeight * 6 + CustomTaskBar.height); // +50 is offset of the taskbar.
-                                                                                   // should make this better
+        fullHeight = animHeight * 5 + CustomTaskBar.height;
+        Scene scene = new Scene(root, 128, fullHeight); // +50 is offset of the taskbar.
+
+                                      // should make this better
 
         scene.setFill(Color.TRANSPARENT);
 
@@ -251,23 +274,39 @@ public class WeatherWindowController {
         weatherDashboardController.start(root);
         weatherDashboardController.setForecastExpanded(false);
 
-        installDragBehavior();
+        installDragBehavior(root);
 
         stage.setScene(scene);
         // Add listener during SHOW FORECAST
         stage.setWidth(animWidth);
-        stage.setHeight(animHeight * 6);
+        // stage.setHeight(animHeight * 5 + Taskbarhe);
         stage.setOpacity(1.0);
 
         stage.setX(screenWidth - animWidth);
         stage.setY(pinnedY - 5);
+
+        invertLayout();
+        stage.setY(screenHeight-fullHeight);
+        stage.setX(screenWidth-450);
 
         stage.setAlwaysOnTop(true);
         stage.setScene(scene);
         stage.show();
 
     }
-
+    boolean invert = false;
+    public void invertLayout() {
+        invert = !invert;
+        int taskY = invert ? fullHeight - CustomTaskBar.height : 0;
+        taskBar.setLayoutY(taskY);
+        weatherDashboardController.invertLayout(CustomTaskBar.height, invert);
+        if (stage.getY()+fullHeight>screenHeight){
+            stage.setY(screenHeight-fullHeight);
+        }
+        if (stage.getY()<screenHeight){
+            stage.setY(0);
+        }
+    }
     public boolean isShowForcast() {
         return showForcast;
     }
@@ -315,10 +354,14 @@ public class WeatherWindowController {
     }
 
 
-    private void installDragBehavior() {
+    private void installDragBehavior(Pane root) {
         Runnable dragHandler = () -> {
             stage.setX(stageStartX + (stage.getX() - stageStartX));
             stage.setY(stageStartY + (stage.getY() - stageStartY));
+            // if (stage.getY() + stage.getHeight() > screenHeight) stage.setY(screenHeight - stage.getHeight());{
+            //     // root.setLayoutY(screenHeight-root.getBoundsInParent().getHeight());
+            //     // verticallyFlipElements();
+            // }
         };
 
         this.taskBar.taskbarView.setOnMousePressed(event -> {
@@ -340,8 +383,14 @@ public class WeatherWindowController {
 
         this.taskBar.taskbarView.setOnMouseReleased(event -> {
             dragHandler.run();
+
         });
 
+    }
+
+    private void verticallyFlipElements() {
+        // set new taskpbarpos
+        // set new weatherdashboardlayout
     }
 
     public void show() {

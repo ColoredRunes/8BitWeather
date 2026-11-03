@@ -37,9 +37,11 @@ nav a {
 }
 
 main {
-    padding: 1rem;
+    display: flex;
+    flex-direction: column;
     align-items: center;
 }
+
 
 .iconimage {
     width: 30px;
@@ -79,12 +81,13 @@ footer {
     text-align: center;
     font-size: 0.9rem;
 }
+
 .sidebox {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  margin: 0 auto;
-  max-width: fit-content;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 24px;
+    text-align: center;
 }
 .notes {
     height: 2.8em;
