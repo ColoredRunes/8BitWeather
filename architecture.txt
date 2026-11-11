@@ -1,12 +1,13 @@
 
-This app is a JavaFX desktop weather renderer built around a central app bootstrap 
+This app (src) is a JavaFX desktop weather renderer built around a central app bootstrap 
 in App.java, a starter menu in MainMenuController.java, a weather window controller 
 in WeatherWindowController.java, and a sprite-based weather animation system driven 
-by AnimationHandler.java and ContentsAnim.java.
+by AnimationHandler.java and ContentsAnim.java. deployed (web) as web\public\8BitWeather-Setup-latest.msi
+
+
 
 Rendering Architecture:
-
-
+(src)
 App
 └── WeatherWindowController
     ├── CustomTaskBar
@@ -42,8 +43,8 @@ App
 
 
 
-
-FULL ARCHITECTURE
+(src)
+FULL ARCHITECTURE 
 src/
 ├── Main.java                       # JavaFX app entry point
 │
@@ -95,3 +96,33 @@ src/
 │   └── GlobalDebug.java
 │
 └── ... (root-level resource/config files outside src)
+
+(web/public)
+\WEB\PUBLIC
+│   404.html
+│   8BitWeather-Setup-1.0.0.msi
+│   8BitWeather-Setup-1.0.1.msi
+│   8BitWeather-Setup-1.0.1patched.msi
+│   8BitWeather-Setup-1.1.0.msi
+│   8BitWeather-Setup-latest.msi
+│   about.html
+│   exit-intent.js
+│   firebase.js
+│   index.html
+│   info.html
+│   legal.html
+│   styles.css
+│   update.html
+│   version.html
+│   version.txt
+│   weather_codes.txt
+│   
+├───css
+├───font
+│   └───8bitfont
+│           8-bit-hud.ttf
+│           license.txt
+│           readme.txt
+│           
+├───images
+└───webimages

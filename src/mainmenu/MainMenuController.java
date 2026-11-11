@@ -125,8 +125,8 @@ public class MainMenuController {
             else{
                 app.weatherPoller.cancel();
             }
-                confirmButton.setDisable(true);
-                textBox.setDisable(true);
+                confirmButton.setDisable(false);
+                textBox.setDisable(false);
                 toast(stage, "❌ Try format: Los Angeles,CA");
                 return;
             }

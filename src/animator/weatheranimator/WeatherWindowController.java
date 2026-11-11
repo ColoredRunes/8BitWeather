@@ -212,7 +212,7 @@ public class WeatherWindowController {
             });
             minimizeButton.setOnMouseClicked(event -> {
                 weatherDashboardController.onMinimizePressed();
-                
+
             });
 
             // forecastButton.setOnMouseClicked(event -> {
@@ -272,7 +272,7 @@ public class WeatherWindowController {
 
         // Text t = new Text();
         weatherDashboardController.start(root);
-        weatherDashboardController.setForecastExpanded(false);
+        // weatherDashboardController.setForecastExpanded(false);
 
         installDragBehavior(root);
 
