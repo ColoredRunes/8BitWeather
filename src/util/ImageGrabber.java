@@ -18,7 +18,7 @@ public class ImageGrabber {
                 base = base + "/";
             }
             String p = base + file_base_name + fileType;
-            util.Debug.print(p);
+            util.Debug.println(p);
             Image im = new Image(ImageGrabber.class.getResourceAsStream(p));
             return im;
         }

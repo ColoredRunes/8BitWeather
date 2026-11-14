@@ -72,7 +72,7 @@ public class App extends Application {
             HttpResponse<String> response =
                 client.send(request, HttpResponse.BodyHandlers.ofString());
                 if (response.statusCode() == 200 && !response.body().trim().equals(version)) {
-                    util.Debug.print(version + "?=" + response.body().trim());
+                    util.Debug.println(version + "?=" + response.body().trim());
                     return true;
                 }
         } catch (IOException e) {

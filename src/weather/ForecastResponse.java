@@ -4,7 +4,6 @@ import java.util.List;
 
 public class ForecastResponse {
     public List<ForecastItem> list;
-    // public List<Main> otherList;
 
     public static class ForecastItem {
         public long dt;
@@ -19,17 +18,28 @@ public class ForecastResponse {
         public String description;
         public String icon;
     }
-    public static class Main{
+
+    public static class Main {
         public double temp;
         public double feels_like;
         public double temp_min;
         public double temp_max;
-        @Override
-        public String toString() {
-            return  "temp: "+temp
-                    +"feels_like: "+feels_like
-                    +"temp_min: "+temp_min
-                    +"temp_max: "+temp_max;
+    }
+
+    @Override
+    public String toString() {
+        String ret = "";
+        for (ForecastItem f : list) {
+            ret += ("DATE:" + f.dt_txt + "\n");
+            for (Weather w : f.weather) {
+                ret += ("--WEATHERID: " + w.id + "\n");
+                ret += ("-- --DESCRIPTION: " + w.description + "\n");
+            }
         }
+        return ret;
+        // return "temp: "+tempa
+        // +"feels_like: "+feels_like
+        // +"temp_min: "+temp_min
+        // +"temp_max: "+temp_max;
     }
 }

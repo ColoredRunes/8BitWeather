@@ -49,6 +49,7 @@ public class WeatherClient {
         String forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid="
                 + API_KEY;
         return getResponse(forecastURL);
+
     }
     
     public static WeatherData[] callData(String city) throws Exception {
@@ -63,6 +64,9 @@ public class WeatherClient {
 
         WeatherResponse current = gson.fromJson(jsonCurrent, WeatherResponse.class);
         ForecastResponse forecast = gson.fromJson(jsonForecast, ForecastResponse.class);
+        util.Debug.println(current+"\n\n");
+        util.Debug.println(forecast.toString());
+
 
         if (current == null || current.main == null || current.sys == null || current.weather == null || current.weather.isEmpty()) {
             throw new IllegalArgumentException("Invalid city or API response for: " + city);
@@ -109,7 +113,6 @@ public class WeatherClient {
         // int idx = 1;
 
         // boolean skipToday = true;
-        System.out.println(jsonCurrent);
         WeatherData[] daysOfData = new WeatherData[5];
         daysOfData[0] = new WeatherData.WeatherDataToday(current.weather.get(0).id, current.main.temp, current.main.tempMax, current.main.tempMin, current.main.feelsLike,current.sys.sunrise,current.sys.sunset); 
         List<String> keys = new ArrayList<>(days.keySet());

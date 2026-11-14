@@ -3,7 +3,6 @@ package mainmenu;
 import java.util.ArrayList;
 
 import animator.ContentsAnim;
-import animator.interfacewindow.ClosableFactory;
 import animator.mainmenu.AnimationConveyor;
 import engine.App;
 import engine.ApplicationContext;
@@ -21,6 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import ui.interfacewindow.ClosableFactory;
 
 public class MainMenuController {
     
@@ -131,7 +131,9 @@ public class MainMenuController {
                 return;
             }
             app.applicationContext.city = normalizedCity;
+            // app.weatherWindowController.start();
             app.weatherWindowController.start();
+
             
             // app.animationController.start();
         }));

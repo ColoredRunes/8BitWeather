@@ -17,13 +17,10 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import util.ImageGrabber;
 
-import java.awt.Canvas;
 import java.awt.Desktop;
-import java.awt.Taskbar;
 
 /**
  * A window controller meant to keep track of higher level items at the window
@@ -215,16 +212,6 @@ public class WeatherWindowController {
 
             });
 
-            // forecastButton.setOnMouseClicked(event -> {
-            //     weatherDashboardController.onForecastPressed();
-            //     if (showForcast) {
-            //         weatherDashboardController.setForecastExpanded(false);
-            //         showForcast = false;
-            //     } else {
-            //         weatherDashboardController.setForecastExpanded(true);
-            //         showForcast = true;
-            //     }
-            // });
             updateButton.setOnMouseClicked(e->{
                 try {
                     if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
@@ -257,6 +244,7 @@ public class WeatherWindowController {
 
     int fullHeight;
     public void start() {
+        
         Pane root = new Pane();
 
         root.setBackground(Background.EMPTY); // or null

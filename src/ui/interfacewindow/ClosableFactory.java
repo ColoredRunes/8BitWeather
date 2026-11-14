@@ -1,4 +1,4 @@
-package animator.interfacewindow;
+package ui.interfacewindow;
 
 import javafx.scene.control.Button;
 
