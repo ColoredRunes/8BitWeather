@@ -97,7 +97,6 @@ public class MainMenuController {
         stage.setTitle("8 Bit Weather");
         stage.setScene(scene);
         stage.show();
-        
 
     }
 
@@ -117,7 +116,7 @@ public class MainMenuController {
     }
 
     public void initAnimator(App app, Stage stage, String city) {
-        toast(stage, "Gathering Information");
+        toast(stage, "Gathering Information", 100);
         String normalizedCity = city.replaceAll("\\s+", " ").replace(" ", "%20");
         String oldCity = app.applicationContext.city;
         confirmButton.setDisable(true);
@@ -132,20 +131,24 @@ public class MainMenuController {
                 }
                 confirmButton.setDisable(false);
                 textBox.setDisable(false);
-                toast(stage, "❌ Try format: Los Angeles,CA");
+                toast(stage, "❌ Try format: Los Angeles,CA", 50);
                 return;
             }
             app.applicationContext.city = normalizedCity;
-            
+
             app.weatherWindowController.start();
-            toast(stage, "Success ✅ - Access from System Tray");
+            toast(stage, "Success ✅", -40);
+            toast(stage, "see tray", -20);
         }));
     }
 
-    public static void toast(Stage owner, String msg) {
+    public static void toast(Stage owner, String msg, double vertPos) {
+        toast(owner, msg, 5,vertPos);
+    }
+    public static void toast(Stage owner, String msg,int dur, double vertPos) {
         Label l = new Label(msg);
         l.setStyle(
-                "-fx-background-color: rgba(0,0,0,0.5); -fx-text-fill: white; -fx-padding: 8 14; -fx-font-family: 'Courier New', monospace;");
+                "-fx-background-color: rgba(2, 45, 79, 0.5); -fx-text-fill: white; -fx-padding: 8 14; -fx-font-family: 'Courier New', monospace;");
         l.setAlignment(Pos.TOP_CENTER);
         l.setMinWidth(Region.USE_PREF_SIZE);
 
@@ -157,10 +160,10 @@ public class MainMenuController {
 
         double popupWidth = l.getWidth();
         double x = owner.getX() + (owner.getWidth() - popupWidth) / 2;
-        double y = owner.getY() + WeatherWindowController.CustomTaskBar.height;
+        double y = owner.getY() + vertPos; // + WeatherWindowController.CustomTaskBar.height;
 
         p.show(owner, x, y);
-        PauseTransition t = new PauseTransition(Duration.seconds(5));
+        PauseTransition t = new PauseTransition(Duration.seconds(dur));
         t.setOnFinished(e -> p.hide());
         t.play();
     }

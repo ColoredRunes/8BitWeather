@@ -45,7 +45,7 @@ public class SystemFxTray extends Application {
         PopupMenu popup = new PopupMenu();
 
         // 2. Create MenuItems
-        MenuItem openItem = new MenuItem("Show Window");
+        MenuItem openItem = new MenuItem("8-Bit-Weather");
         // MenuItem settingsItem = new MenuItem("Settings");
         exitItem = new MenuItem("Exit");
 
@@ -70,7 +70,7 @@ public class SystemFxTray extends Application {
         popup.add(exitItem);
 
         // 5. Attach the PopupMenu to the TrayIcon
-        TrayIcon trayIcon = new TrayIcon(image, "My JavaFX App", popup);
+        TrayIcon trayIcon = new TrayIcon(image, "8-Bit-Forecast", popup);
         trayIcon.setImageAutoSize(true);
 
         // Keep left-click toggle behavior

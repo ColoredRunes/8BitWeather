@@ -5,6 +5,9 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class Position {
+    /**
+     * Simple static helper for consistent global positioning
+     */
     public static void setPos(Stage stage){
         Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
         double width = stage.getWidth() > 0 ? stage.getWidth() : stage.getScene().getWidth();
@@ -12,7 +15,7 @@ public class Position {
         double padding = 10;
 
         stage.setX(visualBounds.getMaxX() - width - padding);
-        stage.setY(visualBounds.getMaxY() - height - padding);
+        stage.setY(visualBounds.getMaxY() - height);
         stage.show();
         stage.toFront();
     }
