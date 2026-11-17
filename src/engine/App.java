@@ -17,6 +17,7 @@ import mainmenu.MainMenuController;
 import weather.WeatherPoller;
 
 public class App extends Application {
+    SystemFxTray sysTray ;
     // File dataDir = new File(System.getenv("LOCALAPPDATA"), "8BitWeather");
     // dataDir.mkdirs();
     public ApplicationContext applicationContext;
@@ -27,6 +28,15 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        sysTray= new SystemFxTray();
+        try {
+            sysTray.start(primaryStage);
+        } catch (Exception e) {
+            util.Debug.println("sys Tray issue");
+            // // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
         primaryStage.getIcons().add(new Image(new File("images/icon.png").toURI().toString()));        primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setResizable(false);
 
@@ -47,7 +57,10 @@ public class App extends Application {
         weatherPoller = new WeatherPoller(weatherWindowController.getWeatherDashboardController(), applicationContext.weatherDrawingState, applicationContext.DOWDrawingStates);
         // Do not show the weather stage until the user has entered a valid city.
         Runnable r = () -> weatherPoller.stop();
+
         weatherWindowController.addShutDownListener(r);
+        sysTray.addShutDownListener(r);
+        Position.setPos(primaryStage);
 
         primaryStage.setOnCloseRequest(event -> {
             if (weatherPoller != null) {

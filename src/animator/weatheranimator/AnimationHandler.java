@@ -60,11 +60,11 @@ public class AnimationHandler  {
     }
 
     AnimationHandler() {
-        initAnimations();
-        startAnimation();
+        // initAnimations();
+        // startAnimation();
     }
 
-    private void initAnimations() {
+    public void initAnimations() {
         tree = new ContentsAnim(
                 "tree",
                 10, 0, 120_000_000L);
@@ -155,7 +155,7 @@ public class AnimationHandler  {
         this.shouldUpdate = shouldUpdate;
     }
 
-    private void startAnimation() {
+    public void startAnimation() {
         new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -196,6 +196,10 @@ public class AnimationHandler  {
         return length;
     }
     public void procureAnim_Contents(WeatherDrawingState weatherState) {
+        
+        initAnimations();
+        startAnimation();
+
         ContentsAnim remoteAnim = null;
         ArrayList<ContentsAnim> drawList = new ArrayList<>();
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import animator.ContentsAnim;
 import animator.mainmenu.AnimationConveyor;
+import animator.weatheranimator.WeatherWindowController;
 import engine.App;
 import engine.ApplicationContext;
 import javafx.animation.PauseTransition;
@@ -15,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
@@ -23,13 +25,14 @@ import javafx.util.Duration;
 import ui.interfacewindow.ClosableFactory;
 
 public class MainMenuController {
-    
+
     Scene scene;
     @SuppressWarnings("unused")
     private ApplicationContext applicationContext;
     AnimationConveyor conveyor;
     Button confirmButton;
     TextField textBox;
+
     public MainMenuController(App app, ApplicationContext applicationContext, Stage stage) {
         start(app, stage);
         this.applicationContext = applicationContext;
@@ -94,6 +97,7 @@ public class MainMenuController {
         stage.setTitle("8 Bit Weather");
         stage.setScene(scene);
         stage.show();
+        
 
     }
 
@@ -113,39 +117,49 @@ public class MainMenuController {
     }
 
     public void initAnimator(App app, Stage stage, String city) {
+        toast(stage, "Gathering Information");
         String normalizedCity = city.replaceAll("\\s+", " ").replace(" ", "%20");
         String oldCity = app.applicationContext.city;
         confirmButton.setDisable(true);
         textBox.setDisable(true);
         app.weatherPoller.start(normalizedCity, ok -> Platform.runLater(() -> {
             if (!ok) {
-                if (oldCity != null)
+                if (oldCity != null) {
                     app.weatherPoller.start(oldCity, x -> {
-            });
-            else{
-                app.weatherPoller.cancel();
-            }
+                    });
+                } else {
+                    app.weatherPoller.cancel();
+                }
                 confirmButton.setDisable(false);
                 textBox.setDisable(false);
                 toast(stage, "❌ Try format: Los Angeles,CA");
                 return;
             }
             app.applicationContext.city = normalizedCity;
-            // app.weatherWindowController.start();
-            app.weatherWindowController.start();
-
             
-            // app.animationController.start();
+            app.weatherWindowController.start();
+            toast(stage, "Success ✅ - Access from System Tray");
         }));
     }
 
-    static void toast(Stage owner, String msg) {
+    public static void toast(Stage owner, String msg) {
         Label l = new Label(msg);
         l.setStyle(
-                "-fx-background-color: rgba(0,0,0,0.8); -fx-text-fill: white; -fx-padding: 8 14; -fx-font-family: 'Courier New', monospace;");
+                "-fx-background-color: rgba(0,0,0,0.5); -fx-text-fill: white; -fx-padding: 8 14; -fx-font-family: 'Courier New', monospace;");
+        l.setAlignment(Pos.TOP_CENTER);
+        l.setMinWidth(Region.USE_PREF_SIZE);
+
         Popup p = new Popup();
         p.getContent().add(l);
-        p.show(owner);
+
+        l.applyCss();
+        l.autosize();
+
+        double popupWidth = l.getWidth();
+        double x = owner.getX() + (owner.getWidth() - popupWidth) / 2;
+        double y = owner.getY() + WeatherWindowController.CustomTaskBar.height;
+
+        p.show(owner, x, y);
         PauseTransition t = new PauseTransition(Duration.seconds(5));
         t.setOnFinished(e -> p.hide());
         t.play();

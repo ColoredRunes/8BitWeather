@@ -88,12 +88,13 @@ public class WeatherDashboardController {
     }
 
     public void start(Pane root) {
-
-        // Text t = new Text();
-        todayAnimationUnit.addToRoot(root);
+        
+        // Text t = new Text();4
+        
+        todayAnimationUnit.start(root);
 
         for (int i = 0; i < daysOfWeekStates.length; i++) {
-            forecastAnimations[i].addToRoot(root);
+            forecastAnimations[i].start(root);
         }
     }
 

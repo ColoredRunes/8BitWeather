@@ -195,7 +195,9 @@ public class WeatherCanvasView {
 
     }
 
-    public void addToRoot(Pane root) {
+    public void start(Pane root) {
+        // handler.initAnimations();
+        // handler.startAnimation();
         root.getChildren().add(canvas);
     }
 }

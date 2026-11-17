@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.ArrayList;
 
 import engine.ApplicationContext;
+import engine.Position;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
@@ -18,6 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import mainmenu.MainMenuController;
 import util.ImageGrabber;
 
 import java.awt.Desktop;
@@ -101,7 +103,8 @@ public class WeatherWindowController {
     }
 
 
-    private class CustomTaskBar {
+    public class CustomTaskBar {
+        public static int height = 25;
         private Button closeButton;
         private Button minimizeButton;
         // private Button forecastButton;
@@ -125,7 +128,6 @@ public class WeatherWindowController {
             
         }
 
-        public static int height = 25;
         
         @SuppressWarnings("unused")
         public int getHeight() {
@@ -152,7 +154,6 @@ public class WeatherWindowController {
         public void initButtons(Group container, ArrayList<Runnable> shutdownL) {
             this.minimizeButton = new Button("-");
             this.closeButton = new Button("x");
-            // this.forecastButton = new Button("📅");
             this.updateButton = getUpdateButton();
             this.invertButton = new Button("⇅");
 
@@ -244,7 +245,6 @@ public class WeatherWindowController {
 
     int fullHeight;
     public void start() {
-        
         Pane root = new Pane();
 
         root.setBackground(Background.EMPTY); // or null
@@ -270,17 +270,13 @@ public class WeatherWindowController {
         // stage.setHeight(animHeight * 5 + Taskbarhe);
         stage.setOpacity(1.0);
 
-        stage.setX(screenWidth - animWidth);
-        stage.setY(pinnedY - 5);
 
         invertLayout();
-        stage.setY(screenHeight-fullHeight);
-        stage.setX(screenWidth-450);
 
         stage.setAlwaysOnTop(true);
         stage.setScene(scene);
+        Position.setPos(stage);
         stage.show();
-
     }
     boolean invert = false;
     public void invertLayout() {
